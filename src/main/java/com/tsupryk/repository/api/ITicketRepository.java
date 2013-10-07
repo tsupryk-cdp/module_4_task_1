@@ -12,7 +12,8 @@ public interface ITicketRepository {
 
     public List<ITicket> getTickets(IFiltrable filter);
 
+    public boolean updateTicket(ITicket ticket);
 
-
+    public ITicket getById(String id);
 
 }

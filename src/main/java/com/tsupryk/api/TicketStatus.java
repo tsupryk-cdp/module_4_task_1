@@ -1,12 +1,12 @@
 package com.tsupryk.api;
 
 /**
- * The enum TicketType.
+ * The enum TicketStatus.
  * <p/>
  * User: Vitaliy
  * Date: 06.10.13
  */
-public enum TicketType {
+public enum TicketStatus {
 
     BOOKED,
 

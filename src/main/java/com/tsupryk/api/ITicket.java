@@ -29,4 +29,8 @@ public interface ITicket {
     public Integer getPlaceNumber();
 
     public void setPlaceNumber(Integer placeNumber);
+
+    TicketStatus getStatus();
+
+    void setStatus(TicketStatus state);
 }

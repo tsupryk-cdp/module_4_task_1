@@ -1,12 +1,13 @@
 package com.tsupryk.service.service;
 
 import com.tsupryk.api.ITicket;
+import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.repository.api.IFiltrable;
 import com.tsupryk.repository.api.ITicketRepository;
 import com.tsupryk.service.api.ITicketService;
 import com.tsupryk.service.util.FilterBuilder;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,10 +24,6 @@ public class TicketService implements ITicketService {
     @Autowired
     private ITicketRepository ticketRepository;
 
-    @Autowired
-    private ObjectMapper jacksonMarshaller;
-
-
     @Override
     public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
         if (!isEmpty(filmName) || !isEmpty(filmStartDate) || !isEmpty(ticketCategory)) {
@@ -38,7 +35,13 @@ public class TicketService implements ITicketService {
 
     @Override
     public boolean bookTickets(String userId, List<ITicket> ticketList) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        validateTickets(ticketList);
+        for (ITicket ticket : ticketList) {
+            ITicket storedTicket = ticketRepository.getById(ticket.getId());
+            storedTicket.setStatus(TicketStatus.BOOKED);
+            ticketRepository.updateTicket(storedTicket);
+        }
+        return true;
     }
 
     @Override
@@ -51,11 +54,20 @@ public class TicketService implements ITicketService {
         return null;
     }
 
-    private boolean isEmpty(String value) {
-        return StringUtils.isEmpty(value);
+    private void validateTickets(List<ITicket> ticketList) {
+        for (ITicket ticket : ticketList) {
+            checkField(ticket.getId(), "Wrong or empty field Id.");
+            checkField(ticket.getCategory(), "Wrong or empty field Category.");
+        }
+    }
+
+    private void checkField(Object value, String message) {
+        if (isEmpty(value)) {
+            throw new ServiceRuntimeException(new IllegalArgumentException(message));
+        }
     }
 
     private boolean isEmpty(Object value) {
-        return value == null;
+        return value instanceof String ? StringUtils.isEmpty(value) : value == null;
     }
 }

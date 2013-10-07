@@ -1,7 +1,7 @@
 package com.tsupryk.repository.service;
 
 import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketType;
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.repository.api.IFiltrable;
 
 import java.util.Date;
@@ -17,16 +17,16 @@ public class TicketFilter implements IFiltrable {
     private String filmName;
     private Date filmStartDate;
     private TicketCategory category;
-    private TicketType ticketType;
+    private TicketStatus ticketStatus;
 
     private String userId;
 
-    public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketType ticketType,
+    public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketStatus ticketStatus,
                         String userId) {
         this.filmName = filmName;
         this.filmStartDate = filmStartDate;
         this.category = category;
-        this.ticketType = ticketType;
+        this.ticketStatus = ticketStatus;
         this.userId = userId;
     }
 
@@ -71,12 +71,12 @@ public class TicketFilter implements IFiltrable {
     }
 
     @Override
-    public TicketType getTicketType() {
-        return ticketType;
+    public TicketStatus getTicketStatus() {
+        return ticketStatus;
     }
 
     @Override
-    public void setTicketType(TicketType ticketType) {
-        this.ticketType = ticketType;
+    public void setTicketStatus(TicketStatus ticketStatus) {
+        this.ticketStatus = ticketStatus;
     }
 }

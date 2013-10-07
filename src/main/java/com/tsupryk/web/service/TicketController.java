@@ -37,6 +37,13 @@ public class TicketController implements ITicketController {
         return availableTickets;
     }
 
+    /**
+     * Books tickets for user.
+     *
+     * @param userId the user id, required
+     * @param ticketList list of tickets to book, field Id in every ticket is required
+     * @return the object
+     */
     @Override
     @ResponseBody
     @RequestMapping(value = "/book", produces = "application/json", method = RequestMethod.POST)

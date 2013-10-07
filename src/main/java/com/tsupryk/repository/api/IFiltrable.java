@@ -1,7 +1,7 @@
 package com.tsupryk.repository.api;
 
 import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketType;
+import com.tsupryk.api.TicketStatus;
 
 import java.util.Date;
 
@@ -29,7 +29,7 @@ public interface IFiltrable {
 
     public void setUserId(String userId);
 
-    TicketType getTicketType();
+    TicketStatus getTicketStatus();
 
-    void setTicketType(TicketType ticketType);
+    void setTicketStatus(TicketStatus ticketStatus);
 }

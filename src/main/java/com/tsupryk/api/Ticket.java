@@ -16,6 +16,8 @@ public class Ticket implements ITicket {
     private TicketCategory category;
     private Integer placeNumber;
 
+    private TicketStatus status;
+
     @Override
     public String getId() {
         return id;
@@ -64,5 +66,15 @@ public class Ticket implements ITicket {
     @Override
     public void setPlaceNumber(Integer placeNumber) {
         this.placeNumber = placeNumber;
+    }
+
+    @Override
+    public TicketStatus getStatus() {
+        return status;
+    }
+
+    @Override
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 }
