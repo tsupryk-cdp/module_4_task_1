@@ -2,6 +2,7 @@ package com.tsupryk.web.api;
 
 import com.tsupryk.api.ITicket;
 import com.tsupryk.api.TicketCategory;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public interface ITicketController {
 
-    public Object getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public Object getAvailableTickets(ModelAndView modelAndView, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
     public Object bookTickets(String userId, List<ITicket> ticketList);
 

@@ -14,16 +14,31 @@
 
     <context:component-scan base-package="com.tsupryk"/>
 
-
-    <bean id="jacksonMarshaller" class="org.codehaus.jackson.map.ObjectMapper"/>
-
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/json/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <context:property-placeholder location="classpath:app.properties" />
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="order" value="0" />
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json" />
+                <entry key="pdf" value="application/pdf" />
+            </map>
+        </property>
+
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"></bean>
+                <bean id="availableTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
+                      p:url="classpath:availableTickets.jrxml"
+                      p:reportDataKey="datasource" />
+                <bean id="bookedTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
+                      p:url="classpath:bookedTickets.jrxml"
+                      p:reportDataKey="datasource" />
+            </list>
+        </property>
+
+    </bean>
 
 </beans>
