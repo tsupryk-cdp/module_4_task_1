@@ -36,7 +36,7 @@ public class TicketRepository implements ITicketRepository {
                 ticket.setId(UUID.randomUUID().toString());
                 ticket.setStatus(TicketStatus.FREE);
                 ticket.setCategory(TicketCategory.STANDARD);
-                if (i > 0) {
+                if (j > 0) {
                     ticket.setFilmName("Terminator");
                 } else {
                     ticket.setFilmName("Independence Day");

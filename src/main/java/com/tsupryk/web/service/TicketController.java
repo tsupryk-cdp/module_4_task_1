@@ -48,6 +48,7 @@ public class TicketController implements ITicketController {
     @ResponseBody
     @RequestMapping(value = "/book", produces = "application/json", method = RequestMethod.POST)
     public Object bookTickets(@RequestParam String userId, @RequestBody List<ITicket> ticketList) {
+        ticketService.bookTickets(userId, ticketList);
         return null;
     }
 
@@ -59,8 +60,8 @@ public class TicketController implements ITicketController {
                                    @RequestParam(required = false) String filmName,
                                    @RequestParam(required = false) Date filmStartDate,
                                    @RequestParam(required = false) TicketCategory ticketCategory) {
-
-        return "index";
+        List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
+        return tickets;
     }
 
 }
