@@ -28,7 +28,9 @@ public class TicketService implements ITicketService {
     public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
         if (!isEmpty(filmName) || !isEmpty(filmStartDate) || !isEmpty(ticketCategory)) {
             IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
-            return ticketRepository.getTickets(filter);
+            List<ITicket> tickets = ticketRepository.getTickets(filter);
+            Collections.sort(tickets, ticketComparator);
+            return tickets;
         }
         return null;
     }
@@ -49,7 +51,9 @@ public class TicketService implements ITicketService {
                   TicketCategory ticketCategory) {
         if (!isEmpty(userId) || !isEmpty(filmName) || !isEmpty(filmStartDate) || !isEmpty(ticketCategory)) {
             IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
-            return ticketRepository.getTickets(filter);
+            List<ITicket> tickets = ticketRepository.getTickets(filter);
+            Collections.sort(tickets, ticketComparator);
+            return tickets;
         }
         return null;
     }
@@ -70,4 +74,11 @@ public class TicketService implements ITicketService {
     private boolean isEmpty(Object value) {
         return value instanceof String ? StringUtils.isEmpty(value) : value == null;
     }
+
+    private Comparator<ITicket> ticketComparator = new Comparator<ITicket>() {
+        @Override
+        public int compare(ITicket o1, ITicket o2) {
+            return o1.getPlaceNumber() - o2.getPlaceNumber();
+        }
+    };
 }

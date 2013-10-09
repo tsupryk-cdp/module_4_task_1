@@ -24,16 +24,18 @@ public class TicketRepository implements ITicketRepository {
 
     @PostConstruct
     public void init() {
+        userTicketIds = new HashMap<>();
         ticketMap = new HashMap<>();
+        int count = 0;
         for (int j = 0; j < 2; j++) {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 1; i <= 10; i++) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
                 calendar.add(Calendar.DAY_OF_MONTH, 5 + j);
 
 
                 ITicket ticket = new Ticket();
-                ticket.setId(UUID.randomUUID().toString());
+                ticket.setId(String.valueOf(count++));
                 ticket.setStatus(TicketStatus.FREE);
                 ticket.setCategory(TicketCategory.STANDARD);
                 if (j > 0) {
@@ -57,8 +59,11 @@ public class TicketRepository implements ITicketRepository {
             storedTickets = ticketMap.values();
         } else if (filter.getTicketStatus() == TicketStatus.BOOKED) {
             storedTickets = new ArrayList<>();
-            for (String ticketId : userTicketIds.get(filter.getUserId())) {
-                storedTickets.add(ticketMap.get(ticketId));
+            List<String> userTickets = userTicketIds.get(filter.getUserId());
+            if (userTickets != null) {
+                for (String ticketId : userTickets) {
+                    storedTickets.add(ticketMap.get(ticketId));
+                }
             }
         }
         // filter tickets
