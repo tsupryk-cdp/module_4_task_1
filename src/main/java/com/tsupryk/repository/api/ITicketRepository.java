@@ -14,6 +14,8 @@ public interface ITicketRepository {
 
     public boolean updateTicket(ITicket ticket);
 
+    public boolean bookTicket(String userId, ITicket ticket);
+
     public ITicket getById(String id);
 
 }

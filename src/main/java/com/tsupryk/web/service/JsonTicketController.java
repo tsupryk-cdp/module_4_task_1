@@ -1,9 +1,6 @@
 package com.tsupryk.web.service;
 
-import com.tsupryk.api.ITicket;
-import com.tsupryk.api.RestResponse;
-import com.tsupryk.api.ServiceRuntimeException;
-import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.*;
 import com.tsupryk.service.api.ITicketService;
 import com.tsupryk.web.api.IJsonTicketController;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -35,7 +32,7 @@ public class JsonTicketController implements IJsonTicketController {
 
     @Override
     @ResponseBody
-    @RequestMapping(value = "/tickets.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/tickets.json", produces = "application/json", method = RequestMethod.GET)
     public Object getAvailableTickets(ModelAndView modelAndView, @RequestParam(required = false) String filmName,
                                       @RequestParam(required = false) Date filmStartDate,
                                       @RequestParam(required = false) TicketCategory ticketCategory) {
@@ -54,7 +51,7 @@ public class JsonTicketController implements IJsonTicketController {
     @Override
     @ResponseBody
     @RequestMapping(value = "/book.json", produces = "application/json", method = RequestMethod.POST)
-    public Object bookTickets(@RequestParam String userId, @RequestBody List<ITicket> ticketList) {
+    public Object bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
         RestResponse response = null;
         try {
             boolean result = ticketService.bookTickets(userId, ticketList);
@@ -64,7 +61,7 @@ public class JsonTicketController implements IJsonTicketController {
                 response = new RestResponse(FAIL, null);
             }
         } catch (ServiceRuntimeException e) {
-            response = new RestResponse(FAIL, e.getCause().getMessage());
+            response = new RestResponse(FAIL, e.getMessage());
         }
         return response;
     }

@@ -18,28 +18,9 @@
 
     <context:property-placeholder location="classpath:app.properties" />
 
-    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-        <property name="order" value="0" />
-        <property name="mediaTypes">
-            <map>
-                <entry key="json" value="application/json" />
-                <entry key="pdf" value="application/pdf" />
-            </map>
-        </property>
-        <property name="defaultViews">
-            <list>
-                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
-                <bean id="availableTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
-                      p:url="classpath:templates/availableTickets.jrxml"
-                      p:reportDataKey="datasource" />
-                <bean id="bookedTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
-                      p:url="classpath:templates/bookedTickets.jrxml"
-                      p:reportDataKey="datasource" />
-                <bean id="bookingTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
-                      p:url="classpath:templates/book.jrxml"
-                      p:reportDataKey="datasource" />
-            </list>
-        </property>
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location" value="classpath:jasper-views.xml"/>
+        <property name="order" value="0"/>
     </bean>
 
 </beans>

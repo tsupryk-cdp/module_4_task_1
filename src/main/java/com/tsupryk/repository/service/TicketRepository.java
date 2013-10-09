@@ -1,11 +1,9 @@
 package com.tsupryk.repository.service;
 
-import com.tsupryk.api.ITicket;
-import com.tsupryk.api.Ticket;
-import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketStatus;
+import com.tsupryk.api.*;
 import com.tsupryk.repository.api.IFiltrable;
 import com.tsupryk.repository.api.ITicketRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -22,13 +20,16 @@ public class TicketRepository implements ITicketRepository {
 
     private Map<String, List<String>> userTicketIds;
 
+    @Value("${cinema.film.place.count}")
+    private Integer placeCount;
+
     @PostConstruct
     public void init() {
         userTicketIds = new HashMap<>();
         ticketMap = new HashMap<>();
         int count = 0;
         for (int j = 0; j < 2; j++) {
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= placeCount; i++) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date());
                 calendar.add(Calendar.DAY_OF_MONTH, 5 + j);
@@ -68,7 +69,7 @@ public class TicketRepository implements ITicketRepository {
         }
         // filter tickets
         for (ITicket ticket : storedTickets) {
-            if (ticket.getStatus() == TicketStatus.FREE) {
+            if (ticket.getStatus() == filter.getTicketStatus()) {
                 if (filter.getCategory() != null && filter.getCategory() != ticket.getCategory()) {
                     continue;
                 }
@@ -86,11 +87,37 @@ public class TicketRepository implements ITicketRepository {
 
     @Override
     public boolean updateTicket(ITicket ticket) {
-        if(ticketMap.get(ticket.getId()) == null){
+        if (ticketMap.get(ticket.getId()) == null){
             return false;
         }
         ticketMap.put(ticket.getId(), ticket);
         return true;
+    }
+
+    @Override
+    public boolean bookTicket(String userId, ITicket ticket) {
+        validateTicketId(ticket.getId());
+        List<String> ticketIds = userTicketIds.get(userId);
+        if (ticketIds == null) {
+            ticketIds = new ArrayList<>();
+        }
+        ticketIds.add(ticket.getId());
+        userTicketIds.put(userId, ticketIds);
+        // update ticket status and category
+        ITicket storedTicket = ticketMap.get(ticket.getId());
+        storedTicket.setStatus(TicketStatus.BOOKED);
+        storedTicket.setCategory(ticket.getCategory());
+        updateTicket(storedTicket);
+        return true;
+    }
+
+    private void validateTicketId(String id) {
+        if (ticketMap.get(id) == null){
+            throw new ServiceRuntimeException(new IllegalArgumentException("There is no ticket with id = " + id));
+        }
+        if (ticketMap.get(id).getStatus() == TicketStatus.BOOKED) {
+            throw new ServiceRuntimeException(new IllegalArgumentException("Ticket with id = " + id + " is already booked"));
+        }
     }
 
     @Override

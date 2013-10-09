@@ -8,5 +8,6 @@ package com.tsupryk.api;
 public class ServiceRuntimeException extends RuntimeException {
 
     public ServiceRuntimeException(Exception e) {
+        super(e);
     }
 }

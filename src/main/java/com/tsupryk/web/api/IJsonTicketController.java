@@ -1,6 +1,7 @@
 package com.tsupryk.web.api;
 
 import com.tsupryk.api.ITicket;
+import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -14,10 +15,10 @@ import java.util.List;
  */
 public interface IJsonTicketController {
 
-    public Object bookTickets(String userId, List<ITicket> ticketList);
+    public Object bookTickets(String userId, List<Ticket> ticketList);
 
-    Object getAvailableTickets(ModelAndView modelAndView, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public Object getAvailableTickets(ModelAndView modelAndView, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    Object getBookedTicketsJson( String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public Object getBookedTicketsJson( String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
 }

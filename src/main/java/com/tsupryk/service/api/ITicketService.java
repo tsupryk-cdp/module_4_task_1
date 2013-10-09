@@ -2,6 +2,7 @@ package com.tsupryk.service.api;
 
 
 import com.tsupryk.api.ITicket;
+import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public interface ITicketService {
 
     public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    public boolean bookTickets(String userId, List<ITicket> ticketList);
+    public boolean bookTickets(String userId, List<Ticket> ticketList);
 
     public List<ITicket> getBookedTickets(String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 

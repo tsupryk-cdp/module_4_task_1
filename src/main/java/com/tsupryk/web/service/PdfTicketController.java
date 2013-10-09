@@ -1,9 +1,6 @@
 package com.tsupryk.web.service;
 
-import com.tsupryk.api.ITicket;
-import com.tsupryk.api.RestResponse;
-import com.tsupryk.api.ServiceRuntimeException;
-import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.*;
 import com.tsupryk.service.api.ITicketService;
 import com.tsupryk.web.api.IPdfTicketController;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -57,14 +54,13 @@ public class PdfTicketController implements IPdfTicketController {
      * @param ticketList list of tickets to book, field Id in every ticket is required
      * @return the object
      */
-//    @Override
-    // TODO to remove
+    @Override
     @ResponseBody
     @RequestMapping(value = "/book.pdf", method = RequestMethod.POST)
-    public ModelAndView bookTickets(@RequestParam String userId, @RequestBody ITicket[] ticketList) {
+    public ModelAndView bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
         RestResponse response = null;
         try {
-            boolean result = ticketService.bookTickets(userId, Arrays.asList(ticketList));
+            boolean result = ticketService.bookTickets(userId, ticketList);
             if (result) {
                 response = new RestResponse(SUCCESS, null);
             } else {
