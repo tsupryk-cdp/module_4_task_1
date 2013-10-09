@@ -2,17 +2,13 @@ package com.tsupryk.web.service;
 
 import com.tsupryk.api.*;
 import com.tsupryk.service.api.ITicketService;
+import com.tsupryk.service.util.TicketUtil;
 import com.tsupryk.web.api.IPdfTicketController;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -42,6 +38,9 @@ public class PdfTicketController implements IPdfTicketController {
     public ModelAndView getAvailableTickets(@RequestParam(required = false) String filmName,
                                             @RequestParam(required = false) Date filmStartDate,
                                             @RequestParam(required = false) TicketCategory ticketCategory) {
+        if (TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate) && TicketUtil.isEmpty(ticketCategory)) {
+            throw new ServiceRuntimeException("No filter parameters specified");
+        }
         List<ITicket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(availableTickets, "availableTicketsPdfReport");
         return modelAndView;
@@ -58,18 +57,15 @@ public class PdfTicketController implements IPdfTicketController {
     @ResponseBody
     @RequestMapping(value = "/book.pdf", method = RequestMethod.POST)
     public ModelAndView bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
+        TicketUtil.validateTickets(ticketList);
         RestResponse response = null;
-        try {
-            boolean result = ticketService.bookTickets(userId, ticketList);
-            if (result) {
-                response = new RestResponse(SUCCESS, null);
-            } else {
-                response = new RestResponse(FAIL, null);
-            }
-        } catch (ServiceRuntimeException e) {
-            response = new RestResponse(FAIL, e.getCause().getMessage());
+        boolean result = ticketService.bookTickets(userId, ticketList);
+        if (result) {
+            response = new RestResponse(SUCCESS, null);
+        } else {
+            response = new RestResponse(FAIL, null);
         }
-        ModelAndView modelAndView = createModelAndView(Arrays.asList(response), "bookingTicketsPdfReport");
+        ModelAndView modelAndView = createModelAndView(Arrays.asList(response), "infoPdfReport");
         return modelAndView;
     }
 
@@ -79,6 +75,10 @@ public class PdfTicketController implements IPdfTicketController {
                                          @RequestParam(required = false) String filmName,
                                          @RequestParam(required = false) Date filmStartDate,
                                          @RequestParam(required = false) TicketCategory ticketCategory) {
+        if (TicketUtil.isEmpty(userId) && TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate)
+                && TicketUtil.isEmpty(ticketCategory)) {
+            throw new ServiceRuntimeException("No filter parameters specified");
+        }
         List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(tickets, "bookedTicketsPdfReport");
         return modelAndView;
@@ -89,6 +89,13 @@ public class PdfTicketController implements IPdfTicketController {
         Map<String,Object> parameterMap = new HashMap<>();
         parameterMap.put(DATASOURCE, JRdataSource);
         return new ModelAndView(viewName, parameterMap);
+    }
+
+    @ExceptionHandler(ServiceRuntimeException.class)
+    public ModelAndView handleCustomException(ServiceRuntimeException ex) {
+        ModelAndView mav = new ModelAndView("error");
+        mav.addObject("exception", ex);
+        return mav;
     }
 
 }

@@ -15,8 +15,8 @@
     <bean id="bookedTicketsPdfReport"  name="bookedTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
           p:url="classpath:templates/bookedTickets.jrxml"
           p:reportDataKey="datasource" />
-    <bean id="bookingTicketsPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
-          p:url="classpath:templates/book.jrxml"
+    <bean id="infoPdfReport" class="org.springframework.web.servlet.view.jasperreports.JasperReportsPdfView"
+          p:url="classpath:templates/info.jrxml"
           p:reportDataKey="datasource" />
 
 </beans>

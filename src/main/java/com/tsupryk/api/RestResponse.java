@@ -13,11 +13,11 @@ public class RestResponse {
 
     private String result;
 
-    private Object resposeBody;
+    private Object responseBody;
 
-    public RestResponse(String result, Object resposeBody) {
+    public RestResponse(String result, Object responseBody) {
         this.result = result;
-        this.resposeBody = resposeBody;
+        this.responseBody = responseBody;
     }
 
     public String getResult() {
@@ -28,11 +28,11 @@ public class RestResponse {
         this.result = result;
     }
 
-    public Object getResposeBody() {
-        return resposeBody;
+    public Object getResponseBody() {
+        return responseBody;
     }
 
-    public void setResposeBody(Object resposeBody) {
-        this.resposeBody = resposeBody;
+    public void setResponseBody(Object responseBody) {
+        this.responseBody = responseBody;
     }
 }

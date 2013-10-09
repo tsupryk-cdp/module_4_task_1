@@ -23,20 +23,15 @@ public class TicketService implements ITicketService {
 
     @Override
     public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
-        if (!isEmpty(filmName) || !isEmpty(filmStartDate) || !isEmpty(ticketCategory)) {
-            IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
-            List<ITicket> tickets = ticketRepository.getTickets(filter);
-            Collections.sort(tickets, ticketPlaceComparator);
-            return tickets;
-        }
-        return null;
+        IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
+        List<ITicket> tickets = ticketRepository.getTickets(filter);
+        Collections.sort(tickets, ticketPlaceComparator);
+        return tickets;
     }
 
     @Override
     public boolean bookTickets(String userId, List<Ticket> ticketList) {
-        validateTickets(ticketList);
         for (ITicket ticket : ticketList) {
-            ITicket storedTicket = ticketRepository.getById(ticket.getId());
             ticketRepository.bookTicket(userId, ticket);
         }
         return true;
@@ -45,30 +40,10 @@ public class TicketService implements ITicketService {
     @Override
     public List<ITicket> getBookedTickets(String userId, String filmName, Date filmStartDate,
                   TicketCategory ticketCategory) {
-        if (!isEmpty(userId) || !isEmpty(filmName) || !isEmpty(filmStartDate) || !isEmpty(ticketCategory)) {
-            IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
-            List<ITicket> tickets = ticketRepository.getTickets(filter);
-            Collections.sort(tickets, ticketPlaceComparator);
-            return tickets;
-        }
-        return null;
-    }
-
-    private void validateTickets(List<Ticket> ticketList) {
-        for (ITicket ticket : ticketList) {
-            checkField(ticket.getId(), "Wrong or empty field Id.");
-            checkField(ticket.getCategory(), "Wrong or empty field Category.");
-        }
-    }
-
-    private void checkField(Object value, String message) {
-        if (isEmpty(value)) {
-            throw new ServiceRuntimeException(new IllegalArgumentException(message));
-        }
-    }
-
-    private boolean isEmpty(Object value) {
-        return value instanceof String ? StringUtils.isEmpty(value) : value == null;
+        IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
+        List<ITicket> tickets = ticketRepository.getTickets(filter);
+        Collections.sort(tickets, ticketPlaceComparator);
+        return tickets;
     }
 
     private Comparator<ITicket> ticketPlaceComparator = new Comparator<ITicket>() {

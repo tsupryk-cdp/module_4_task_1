@@ -15,7 +15,7 @@
 				<textElement textAlignment="Center">
 					<font size="22"/>
 				</textElement>
-				<text><![CDATA[Tickets booking]]></text>
+				<text><![CDATA[Cinema info]]></text>
 			</staticText>
 		</band>
 	</title>

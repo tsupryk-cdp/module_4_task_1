@@ -113,10 +113,10 @@ public class TicketRepository implements ITicketRepository {
 
     private void validateTicketId(String id) {
         if (ticketMap.get(id) == null){
-            throw new ServiceRuntimeException(new IllegalArgumentException("There is no ticket with id = " + id));
+            throw new ServiceRuntimeException("There is no ticket with id = " + id);
         }
         if (ticketMap.get(id).getStatus() == TicketStatus.BOOKED) {
-            throw new ServiceRuntimeException(new IllegalArgumentException("Ticket with id = " + id + " is already booked"));
+            throw new ServiceRuntimeException("Ticket with id = " + id + " is already booked");
         }
     }
 

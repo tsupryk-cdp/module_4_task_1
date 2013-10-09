@@ -2,11 +2,13 @@ package com.tsupryk.web.service;
 
 import com.tsupryk.api.*;
 import com.tsupryk.service.api.ITicketService;
+import com.tsupryk.service.util.TicketUtil;
 import com.tsupryk.web.api.IJsonTicketController;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,6 +38,9 @@ public class JsonTicketController implements IJsonTicketController {
     public Object getAvailableTickets(ModelAndView modelAndView, @RequestParam(required = false) String filmName,
                                       @RequestParam(required = false) Date filmStartDate,
                                       @RequestParam(required = false) TicketCategory ticketCategory) {
+        if (TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate) && TicketUtil.isEmpty(ticketCategory)) {
+            return new RestResponse(FAIL, "No filter parameters specified");
+        }
         List<ITicket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
         RestResponse response = new RestResponse(SUCCESS, availableTickets);
         return response;
@@ -54,6 +59,7 @@ public class JsonTicketController implements IJsonTicketController {
     public Object bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
         RestResponse response = null;
         try {
+            TicketUtil.validateTickets(ticketList);
             boolean result = ticketService.bookTickets(userId, ticketList);
             if (result) {
                 response = new RestResponse(SUCCESS, null);
@@ -74,6 +80,10 @@ public class JsonTicketController implements IJsonTicketController {
                                        @RequestParam(required = false) String filmName,
                                        @RequestParam(required = false) Date filmStartDate,
                                        @RequestParam(required = false) TicketCategory ticketCategory) {
+        if (TicketUtil.isEmpty(userId) && TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate)
+                && TicketUtil.isEmpty(ticketCategory)) {
+            return new RestResponse(FAIL, "No filter parameters specified");
+        }
         List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
         RestResponse response = new RestResponse(SUCCESS, tickets);
         return response;
