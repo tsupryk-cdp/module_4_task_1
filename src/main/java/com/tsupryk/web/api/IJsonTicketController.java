@@ -17,7 +17,7 @@ public interface IJsonTicketController {
 
     public Object bookTickets(String userId, List<Ticket> ticketList);
 
-    public Object getAvailableTickets(ModelAndView modelAndView, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public Object getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
     public Object getBookedTicketsJson( String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 

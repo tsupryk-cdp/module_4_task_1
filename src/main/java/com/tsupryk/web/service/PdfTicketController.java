@@ -30,6 +30,8 @@ public class PdfTicketController implements IPdfTicketController {
     private static final String FAIL = "FAIL";
     private static final String DATASOURCE = "datasource";
 
+    private static final String EMPTY_FILTER_FIELDS = "You should sprecify at least one parameter: filmName, filmStartDate or ticketCategory";
+
     @Autowired
     private ITicketService ticketService;
 
@@ -39,7 +41,7 @@ public class PdfTicketController implements IPdfTicketController {
                                             @RequestParam(required = false) Date filmStartDate,
                                             @RequestParam(required = false) TicketCategory ticketCategory) {
         if (TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate) && TicketUtil.isEmpty(ticketCategory)) {
-            throw new ServiceRuntimeException("No filter parameters specified");
+            throw new ServiceRuntimeException(EMPTY_FILTER_FIELDS);
         }
         List<ITicket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(availableTickets, "availableTicketsPdfReport");
@@ -77,7 +79,7 @@ public class PdfTicketController implements IPdfTicketController {
                                          @RequestParam(required = false) TicketCategory ticketCategory) {
         if (TicketUtil.isEmpty(userId) && TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate)
                 && TicketUtil.isEmpty(ticketCategory)) {
-            throw new ServiceRuntimeException("No filter parameters specified");
+            throw new ServiceRuntimeException(EMPTY_FILTER_FIELDS);
         }
         List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(tickets, "bookedTicketsPdfReport");

@@ -30,7 +30,7 @@ public interface ITicket {
 
     public void setPlaceNumber(Integer placeNumber);
 
-    TicketStatus getStatus();
+    public TicketStatus getStatus();
 
     void setStatus(TicketStatus state);
 }
