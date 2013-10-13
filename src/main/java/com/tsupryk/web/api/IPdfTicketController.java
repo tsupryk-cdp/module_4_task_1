@@ -16,8 +16,8 @@ public interface IPdfTicketController {
 
     public ModelAndView getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    public ModelAndView getBookedTickets(String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public ModelAndView getBookedTickets(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    public ModelAndView bookTickets(String userId, List<Ticket> ticketList);
+    public ModelAndView bookTickets(Integer userId, List<Ticket> ticketList);
 
 }

@@ -10,21 +10,22 @@ import java.util.Date;
  */
 public class Ticket implements ITicket {
 
-    private String id;
+    private Integer id;
     private String filmName;
     private Date filmStartDate;
     private TicketCategory category;
     private Integer placeNumber;
 
     private TicketStatus status;
+    private Integer userId;
 
     @Override
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -76,5 +77,15 @@ public class Ticket implements ITicket {
     @Override
     public void setStatus(TicketStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public Integer getUserId() {
+        return userId;
+    }
+
+    @Override
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

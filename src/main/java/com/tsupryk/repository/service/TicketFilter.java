@@ -19,10 +19,10 @@ public class TicketFilter implements IFiltrable {
     private TicketCategory category;
     private TicketStatus ticketStatus;
 
-    private String userId;
+    private Integer userId;
 
     public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketStatus ticketStatus,
-                        String userId) {
+                        Integer userId) {
         this.filmName = filmName;
         this.filmStartDate = filmStartDate;
         this.category = category;
@@ -61,12 +61,12 @@ public class TicketFilter implements IFiltrable {
     }
 
     @Override
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
     @Override
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

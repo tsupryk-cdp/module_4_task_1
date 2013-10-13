@@ -1,128 +1,145 @@
 package com.tsupryk.repository.service;
 
-import com.tsupryk.api.*;
+import com.tsupryk.api.ITicket;
+import com.tsupryk.api.Ticket;
+import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.repository.api.IFiltrable;
 import com.tsupryk.repository.api.ITicketRepository;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
- * The Class TicketRepository.
- * Date: 06.09.13
+ * The class TicketRepository.
+ * <p/>
+ * User: Vitaliy
+ * Date: 12.10.13
  */
 @Repository
 public class TicketRepository implements ITicketRepository {
 
-    private Map<String, ITicket> ticketMap;
+    private static final String BASE_SELECT = "SELECT * FROM app.tickets";
+    private static final String BASE_UPDATE_BY_ID = "UPDATE app.tickets SET user_id = :userId, film_name = :filmName, category = :category, " +
+            "film_start_date = :filmStartDate, place_number = :placeNumber, status = :status WHERE id = :id";
 
-    private Map<String, List<String>> userTicketIds;
-
-    @Value("${cinema.film.place.count}")
-    private Integer placeCount;
-
-    @PostConstruct
-    public void init() {
-        userTicketIds = new HashMap<>();
-        ticketMap = new HashMap<>();
-        int count = 0;
-        for (int j = 0; j < 2; j++) {
-            for (int i = 1; i <= placeCount; i++) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(new Date());
-                calendar.add(Calendar.DAY_OF_MONTH, 5 + j);
+    private static final String SELECT_BY_ID = "SELECT id, user_id, film_name, category, film_start_date, place_number, " +
+            "status FROM app.tickets WHERE id = :id";
 
 
-                ITicket ticket = new Ticket();
-                ticket.setId(String.valueOf(count++));
-                ticket.setStatus(TicketStatus.FREE);
-                ticket.setCategory(TicketCategory.STANDARD);
-                if (j > 0) {
-                    ticket.setFilmName("Terminator");
-                } else {
-                    ticket.setFilmName("Independence Day");
-                }
-                ticket.setFilmStartDate(calendar.getTime());
-                ticket.setPlaceNumber(i);
+    @Autowired
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-                ticketMap.put(ticket.getId(), ticket);
-            }
-        }
-    }
 
     @Override
     public List<ITicket> getTickets(IFiltrable filter) {
-        List<ITicket> tickets = new ArrayList<>();
-        Collection<ITicket> storedTickets = null;
-        if (filter.getTicketStatus() == TicketStatus.FREE) {
-            storedTickets = ticketMap.values();
-        } else if (filter.getTicketStatus() == TicketStatus.BOOKED) {
-            storedTickets = new ArrayList<>();
-            List<String> userTickets = userTicketIds.get(filter.getUserId());
-            if (userTickets != null) {
-                for (String ticketId : userTickets) {
-                    storedTickets.add(ticketMap.get(ticketId));
-                }
-            }
-        }
-        // filter tickets
-        for (ITicket ticket : storedTickets) {
-            if (ticket.getStatus() == filter.getTicketStatus()) {
-                if (filter.getCategory() != null && filter.getCategory() != ticket.getCategory()) {
-                    continue;
-                }
-                if (filter.getFilmName() != null && !filter.getFilmName().equals(ticket.getFilmName())) {
-                    continue;
-                }
-                if (filter.getFilmStartDate() != null && !filter.getFilmStartDate().equals(ticket.getFilmStartDate())) {
-                    continue;
-                }
-                tickets.add(ticket);
-            }
-        }
-        return tickets;
+        String query = createQueryWithFilter(BASE_SELECT, filter);
+        SqlParameterSource parameterSource = createMapSource(filter);
+        return namedParameterJdbcTemplate.query(query, parameterSource, ticketRowMapper);
     }
 
     @Override
     public boolean updateTicket(ITicket ticket) {
-        if (ticketMap.get(ticket.getId()) == null){
-            return false;
-        }
-        ticketMap.put(ticket.getId(), ticket);
+        namedParameterJdbcTemplate.update(BASE_UPDATE_BY_ID, createMapSource(ticket));
         return true;
     }
 
     @Override
-    public boolean bookTicket(String userId, ITicket ticket) {
-        validateTicketId(ticket.getId());
-        List<String> ticketIds = userTicketIds.get(userId);
-        if (ticketIds == null) {
-            ticketIds = new ArrayList<>();
-        }
-        ticketIds.add(ticket.getId());
-        userTicketIds.put(userId, ticketIds);
-        // update ticket status and category
-        ITicket storedTicket = ticketMap.get(ticket.getId());
-        storedTicket.setStatus(TicketStatus.BOOKED);
-        storedTicket.setCategory(ticket.getCategory());
-        updateTicket(storedTicket);
-        return true;
+    public ITicket getById(Integer id) {
+        List<ITicket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
+                ticketRowMapper);
+        return tickets.get(0);
     }
 
-    private void validateTicketId(String id) {
-        if (ticketMap.get(id) == null){
-            throw new ServiceRuntimeException("There is no ticket with id = " + id);
+    private SqlParameterSource createMapSource(Object obj) {
+        SqlParameterSource source = null;
+        if (obj instanceof IFiltrable) {
+            IFiltrable filter = (IFiltrable) obj;
+            source = new MapSqlParameterSource()
+                    .addValue("status", filter.getTicketStatus() == null ? null : filter.getTicketStatus().toString())
+                    .addValue("filmName", filter.getFilmName())
+                    .addValue("filmStartDate", filter.getFilmStartDate())
+                    .addValue("category", filter.getCategory() == null ? null : filter.getCategory().toString())
+                    .addValue("userId", filter.getUserId());
+        } else if (obj instanceof ITicket) {
+            ITicket ticket = (ITicket) obj;
+            source = new MapSqlParameterSource()
+                    .addValue("status", ticket.getStatus() == null ? null : ticket.getStatus().toString())
+                    .addValue("filmName", ticket.getFilmName())
+                    .addValue("filmStartDate", ticket.getFilmStartDate())
+                    .addValue("category", ticket.getCategory() == null ? null : ticket.getCategory().toString())
+                    .addValue("userId", ticket.getUserId())
+                    .addValue("placeNumber", ticket.getPlaceNumber())
+                    .addValue("id", ticket.getId());
         }
-        if (ticketMap.get(id).getStatus() == TicketStatus.BOOKED) {
-            throw new ServiceRuntimeException("Ticket with id = " + id + " is already booked");
-        }
+        return source;
     }
 
-    @Override
-    public ITicket getById(String id) {
-        return ticketMap.get(id);
+    private String createQueryWithFilter(String baseSql, IFiltrable filter) {
+        StringBuilder sql = new StringBuilder(baseSql);
+
+        sql.append(" WHERE");
+
+        if (filter.getTicketStatus() != null) {
+            appendParam(sql, "status", "status");
+        }
+        if (filter.getFilmName() != null) {
+            appendParam(sql, "film_name", "filmName");
+        }
+        if (filter.getFilmStartDate() != null) {
+            appendParam(sql, "film_start_date", "filmStartDate");
+        }
+        if (filter.getCategory() != null) {
+            appendParam(sql, "category", "category");
+        }
+        if (filter.getUserId() != null) {
+            appendParam(sql, "user_id", "userId");
+        }
+
+        return sql.toString();
     }
+
+    private void appendParam(StringBuilder sql, String tableFieldName, String objectFieldName) {
+        String stringParam = "? = :$";
+        stringParam = stringParam.replace("?", tableFieldName);
+        stringParam = stringParam.replace("$", objectFieldName);
+        if (sql.lastIndexOf("WHERE") != sql.length() - 5) {
+            sql.append(" AND ");
+        } else {
+            sql.append(" ");
+        }
+        sql.append(stringParam);
+    }
+
+
+    private ITicket extractTicket(ResultSet rs) throws SQLException {
+        ITicket ticket = new Ticket();
+        ticket.setId(rs.getInt("id"));
+        ticket.setPlaceNumber(rs.getInt("place_number"));
+        ticket.setStatus(TicketStatus.valueOf(rs.getString("status")));
+        ticket.setCategory(TicketCategory.valueOf(rs.getString("category")));
+        ticket.setFilmName(rs.getString("film_name"));
+        ticket.setFilmStartDate(rs.getDate("film_start_date"));
+        ticket.setUserId(rs.getInt("user_id"));
+        return ticket;
+    }
+
+    private RowMapper<ITicket> ticketRowMapper = new RowMapper<ITicket>() {
+
+        @Override
+        public ITicket mapRow(ResultSet rs, int rowNum) throws SQLException {
+            ITicket ticket = extractTicket(rs);
+            return ticket;
+        }
+    };
 
 }

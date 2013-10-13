@@ -10,9 +10,9 @@ import java.util.Date;
  */
 public interface ITicket {
 
-    public String getId();
+    public Integer getId();
 
-    public void setId(String id);
+    public void setId(Integer id);
 
     public String getFilmName();
 
@@ -33,4 +33,8 @@ public interface ITicket {
     TicketStatus getStatus();
 
     void setStatus(TicketStatus state);
+
+    Integer getUserId();
+
+    void setUserId(Integer userId);
 }

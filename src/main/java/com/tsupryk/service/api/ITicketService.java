@@ -16,8 +16,8 @@ public interface ITicketService {
 
     public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    public boolean bookTickets(String userId, List<Ticket> ticketList);
+    public boolean bookTickets(Integer userId, List<Ticket> ticketList);
 
-    public List<ITicket> getBookedTickets(String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public List<ITicket> getBookedTickets(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
 }

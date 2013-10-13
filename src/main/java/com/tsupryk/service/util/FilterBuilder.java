@@ -22,7 +22,7 @@ public class FilterBuilder {
         return new TicketFilter(filmName, filmStartDate, ticketCategory, TicketStatus.FREE, null);
     }
 
-    public static IFiltrable buildBookedTicketsFilter(String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory){
+    public static IFiltrable buildBookedTicketsFilter(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory){
         return new TicketFilter(filmName, filmStartDate, ticketCategory, TicketStatus.BOOKED, userId);
     }
 

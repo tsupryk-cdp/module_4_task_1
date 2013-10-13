@@ -10,13 +10,15 @@
 
     <mvc:annotation-driven />
 
-    <context:annotation-config />
 
+    <context:annotation-config />
     <context:component-scan base-package="com.tsupryk"/>
+    <context:property-placeholder location="classpath:app.properties" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <context:property-placeholder location="classpath:app.properties" />
+    <import resource="db-config.xml" />
+
 
     <bean class="org.springframework.web.servlet.view.XmlViewResolver">
         <property name="location" value="classpath:jasper-views.xml"/>

@@ -56,7 +56,7 @@ public class JsonTicketController implements IJsonTicketController {
     @Override
     @ResponseBody
     @RequestMapping(value = "/book.json", produces = "application/json", method = RequestMethod.POST)
-    public Object bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
+    public Object bookTickets(@RequestParam Integer userId, @RequestBody List<Ticket> ticketList) {
         RestResponse response = null;
         try {
             TicketUtil.validateTickets(ticketList);
@@ -76,7 +76,7 @@ public class JsonTicketController implements IJsonTicketController {
     @ResponseBody
     @RequestMapping(value = "/tickets/booked/{" + USER_ID + "}.json", produces = "application/json",
             method = RequestMethod.GET)
-    public Object getBookedTicketsJson(@PathVariable(USER_ID) String userId,
+    public Object getBookedTicketsJson(@PathVariable(USER_ID) Integer userId,
                                        @RequestParam(required = false) String filmName,
                                        @RequestParam(required = false) Date filmStartDate,
                                        @RequestParam(required = false) TicketCategory ticketCategory) {

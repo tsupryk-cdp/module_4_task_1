@@ -25,9 +25,9 @@ public interface IFiltrable {
 
     public void setCategory(TicketCategory category);
 
-    public String getUserId();
+    public Integer getUserId();
 
-    public void setUserId(String userId);
+    public void setUserId(Integer userId);
 
     TicketStatus getTicketStatus();
 
