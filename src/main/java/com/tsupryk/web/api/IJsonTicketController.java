@@ -15,10 +15,10 @@ import java.util.List;
  */
 public interface IJsonTicketController {
 
-    public Object bookTickets(String userId, List<Ticket> ticketList);
+    public Object bookTickets(Integer  userId, List<Ticket> ticketList);
 
     public Object getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
-    public Object getBookedTicketsJson( String userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public Object getBookedTicketsJson(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
 }

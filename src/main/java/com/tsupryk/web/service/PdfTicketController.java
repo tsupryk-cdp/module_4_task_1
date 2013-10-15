@@ -58,7 +58,7 @@ public class PdfTicketController implements IPdfTicketController {
     @Override
     @ResponseBody
     @RequestMapping(value = "/book.pdf", method = RequestMethod.POST)
-    public ModelAndView bookTickets(@RequestParam String userId, @RequestBody List<Ticket> ticketList) {
+    public ModelAndView bookTickets(@RequestParam Integer userId, @RequestBody List<Ticket> ticketList) {
         TicketUtil.validateTickets(ticketList);
         RestResponse response = null;
         boolean result = ticketService.bookTickets(userId, ticketList);
@@ -73,7 +73,7 @@ public class PdfTicketController implements IPdfTicketController {
 
     @Override
     @RequestMapping(value = "/tickets/booked/{" + USER_ID + "}.pdf", method = RequestMethod.GET)
-    public ModelAndView getBookedTickets(@PathVariable(USER_ID) String userId,
+    public ModelAndView getBookedTickets(@PathVariable(USER_ID) Integer userId,
                                          @RequestParam(required = false) String filmName,
                                          @RequestParam(required = false) Date filmStartDate,
                                          @RequestParam(required = false) TicketCategory ticketCategory) {
