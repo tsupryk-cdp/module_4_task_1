@@ -1,4 +1,4 @@
-package com.tsupryk.service.api;
+package com.tsupryk.api;
 
 
 import com.tsupryk.api.Ticket;

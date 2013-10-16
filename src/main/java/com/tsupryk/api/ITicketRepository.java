@@ -1,6 +1,4 @@
-package com.tsupryk.repository.api;
-
-import com.tsupryk.api.Ticket;
+package com.tsupryk.api;
 
 import java.util.List;
 

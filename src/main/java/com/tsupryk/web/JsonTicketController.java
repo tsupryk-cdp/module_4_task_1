@@ -1,9 +1,9 @@
-package com.tsupryk.web.service;
+package com.tsupryk.web;
 
 import com.tsupryk.api.*;
-import com.tsupryk.service.api.ITicketService;
-import com.tsupryk.service.util.TicketUtil;
-import com.tsupryk.web.api.IJsonTicketController;
+import com.tsupryk.api.ITicketService;
+import com.tsupryk.util.TicketUtil;
+import com.tsupryk.api.IJsonTicketController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

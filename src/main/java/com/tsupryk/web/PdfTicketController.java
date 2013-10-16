@@ -1,9 +1,9 @@
-package com.tsupryk.web.service;
+package com.tsupryk.web;
 
 import com.tsupryk.api.*;
-import com.tsupryk.service.api.ITicketService;
-import com.tsupryk.service.util.TicketUtil;
-import com.tsupryk.web.api.IPdfTicketController;
+import com.tsupryk.api.ITicketService;
+import com.tsupryk.util.TicketUtil;
+import com.tsupryk.api.IPdfTicketController;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;

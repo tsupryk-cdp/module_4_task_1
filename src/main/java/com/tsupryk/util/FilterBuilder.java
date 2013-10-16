@@ -1,9 +1,9 @@
-package com.tsupryk.service.util;
+package com.tsupryk.util;
 
 import com.tsupryk.api.TicketCategory;
 import com.tsupryk.api.TicketStatus;
-import com.tsupryk.repository.api.IFiltrable;
-import com.tsupryk.repository.service.TicketFilter;
+import com.tsupryk.api.IFiltrable;
+import com.tsupryk.repository.TicketFilter;
 
 import java.util.Date;
 

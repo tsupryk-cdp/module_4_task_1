@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'jetty'
+apply plugin: 'idea'
 
 jettyRun {
     httpPort=9000
@@ -15,6 +16,8 @@ dependencies {
     compile 'org.springframework:spring-webmvc:3.2.4.RELEASE'
     compile 'org.springframework:spring-context-support:3.2.4.RELEASE'
     compile 'org.springframework:spring-jdbc:3.2.4.RELEASE'
+    compile 'org.springframework:spring-test:3.2.4.RELEASE'
+
 
     compile 'org.apache.tomcat:servlet-api:6.0.37'
 
@@ -26,6 +29,9 @@ dependencies {
 
     compile 'commons-dbcp:commons-dbcp:1.4'
     compile 'org.postgresql:postgresql:9.2-1003-jdbc4'
+
+    compile 'junit:junit:4.10'
+
 
 
 }

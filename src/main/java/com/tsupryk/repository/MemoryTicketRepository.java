@@ -1,10 +1,8 @@
-package com.tsupryk.repository.service;
+package com.tsupryk.repository;
 
 import com.tsupryk.api.*;
-import com.tsupryk.repository.api.IFiltrable;
-import com.tsupryk.repository.api.ITicketRepository;
+import com.tsupryk.api.IFiltrable;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

@@ -1,15 +1,14 @@
-package com.tsupryk.service.service;
+package com.tsupryk.service;
 
 import com.tsupryk.api.*;
-import com.tsupryk.repository.api.IFiltrable;
-import com.tsupryk.repository.api.ITicketRepository;
-import com.tsupryk.service.api.ITicketService;
-import com.tsupryk.service.util.FilterBuilder;
+import com.tsupryk.api.IFiltrable;
+import com.tsupryk.api.ITicketRepository;
+import com.tsupryk.api.ITicketService;
+import com.tsupryk.util.FilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 

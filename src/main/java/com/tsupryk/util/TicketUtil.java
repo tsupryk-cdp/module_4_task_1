@@ -1,4 +1,4 @@
-package com.tsupryk.service.util;
+package com.tsupryk.util;
 
 import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.Ticket;

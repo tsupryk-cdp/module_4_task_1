@@ -1,4 +1,4 @@
-package com.tsupryk.repository.api;
+package com.tsupryk.api;
 
 import com.tsupryk.api.TicketCategory;
 import com.tsupryk.api.TicketStatus;

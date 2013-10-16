@@ -1,10 +1,10 @@
-package com.tsupryk.repository.service;
+package com.tsupryk.repository;
 
 import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
 import com.tsupryk.api.TicketStatus;
-import com.tsupryk.repository.api.IFiltrable;
-import com.tsupryk.repository.api.ITicketRepository;
+import com.tsupryk.api.IFiltrable;
+import com.tsupryk.api.ITicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -27,11 +27,12 @@ import java.util.List;
 public class TicketRepository implements ITicketRepository {
 
     private static final String BASE_SELECT = "SELECT * FROM app.tickets";
+
     private static final String BASE_UPDATE_BY_ID = "UPDATE app.tickets SET user_id = :userId, film_name = :filmName, category = :category, " +
             "film_start_date = :filmStartDate, place_number = :placeNumber, status = :status WHERE id = :id";
 
-    private static final String SELECT_BY_ID = "SELECT id, user_id, film_name, category, film_start_date, place_number, " +
-            "status FROM app.tickets WHERE id = :id";
+    private static final String SELECT_BY_ID = "SELECT id, user_id, film_name, category, film_start_date, place_number, status " +
+            "FROM app.tickets WHERE id = :id";
 
 
     @Autowired
@@ -42,7 +43,7 @@ public class TicketRepository implements ITicketRepository {
     public List<Ticket> getTickets(IFiltrable filter) {
         String query = createQueryWithFilter(BASE_SELECT, filter);
         SqlParameterSource parameterSource = createMapSource(filter);
-        return namedParameterJdbcTemplate.query(query, parameterSource, new BeanPropertyRowMapper<Ticket>(Ticket.class));
+        return namedParameterJdbcTemplate.query(query, parameterSource, new BeanPropertyRowMapper<>(Ticket.class));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class TicketRepository implements ITicketRepository {
     @Override
     public Ticket getById(Integer id) {
         List<Ticket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
-                new BeanPropertyRowMapper<Ticket>(Ticket.class));
+                new BeanPropertyRowMapper<>(Ticket.class));
         return tickets.get(0);
     }
 
@@ -121,27 +122,5 @@ public class TicketRepository implements ITicketRepository {
         }
         sql.append(stringParam);
     }
-
-
-    private Ticket extractTicket(ResultSet rs) throws SQLException {
-        Ticket ticket = new Ticket();
-        ticket.setId(rs.getInt("id"));
-        ticket.setPlaceNumber(rs.getInt("place_number"));
-        ticket.setStatus(TicketStatus.valueOf(rs.getString("status")));
-        ticket.setCategory(TicketCategory.valueOf(rs.getString("category")));
-        ticket.setFilmName(rs.getString("film_name"));
-        ticket.setFilmStartDate(rs.getDate("film_start_date"));
-        ticket.setUserId(rs.getInt("user_id"));
-        return ticket;
-    }
-
-    private RowMapper<Ticket> ticketRowMapper = new RowMapper<Ticket>() {
-
-        @Override
-        public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Ticket ticket = extractTicket(rs);
-            return ticket;
-        }
-    };
 
 }
