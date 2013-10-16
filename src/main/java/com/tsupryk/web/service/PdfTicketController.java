@@ -43,7 +43,7 @@ public class PdfTicketController implements IPdfTicketController {
         if (TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate) && TicketUtil.isEmpty(ticketCategory)) {
             throw new ServiceRuntimeException(EMPTY_FILTER_FIELDS);
         }
-        List<ITicket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
+        List<Ticket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(availableTickets, "availableTicketsPdfReport");
         return modelAndView;
     }
@@ -81,7 +81,7 @@ public class PdfTicketController implements IPdfTicketController {
                 && TicketUtil.isEmpty(ticketCategory)) {
             throw new ServiceRuntimeException(EMPTY_FILTER_FIELDS);
         }
-        List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
+        List<Ticket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
         ModelAndView modelAndView = createModelAndView(tickets, "bookedTicketsPdfReport");
         return modelAndView;
     }

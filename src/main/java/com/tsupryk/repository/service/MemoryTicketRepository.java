@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class MemoryTicketRepository {
 
-    private Map<String, ITicket> ticketMap;
+    private Map<String, Ticket> ticketMap;
 
     private Map<String, List<String>> userTicketIds;
 
@@ -34,7 +34,7 @@ public class MemoryTicketRepository {
                 calendar.add(Calendar.DAY_OF_MONTH, 5 + j);
 
 
-                ITicket ticket = new Ticket();
+                Ticket ticket = new Ticket();
                 ticket.setId(count++);
                 ticket.setStatus(TicketStatus.FREE);
                 ticket.setCategory(TicketCategory.STANDARD);
@@ -51,9 +51,9 @@ public class MemoryTicketRepository {
         }
     }
 
-    public List<ITicket> getTickets(IFiltrable filter) {
-        List<ITicket> tickets = new ArrayList<>();
-        Collection<ITicket> storedTickets = null;
+    public List<Ticket> getTickets(IFiltrable filter) {
+        List<Ticket> tickets = new ArrayList<>();
+        Collection<Ticket> storedTickets = null;
         if (filter.getTicketStatus() == TicketStatus.FREE) {
             storedTickets = ticketMap.values();
         } else if (filter.getTicketStatus() == TicketStatus.BOOKED) {
@@ -66,7 +66,7 @@ public class MemoryTicketRepository {
             }
         }
         // filter tickets
-        for (ITicket ticket : storedTickets) {
+        for (Ticket ticket : storedTickets) {
             if (ticket.getStatus() == filter.getTicketStatus()) {
                 if (filter.getCategory() != null && filter.getCategory() != ticket.getCategory()) {
                     continue;
@@ -83,7 +83,7 @@ public class MemoryTicketRepository {
         return tickets;
     }
 
-    public boolean updateTicket(ITicket ticket) {
+    public boolean updateTicket(Ticket ticket) {
         if (ticketMap.get(ticket.getId()) == null){
             return false;
         }
@@ -91,7 +91,7 @@ public class MemoryTicketRepository {
         return true;
     }
 
-    public boolean bookTicket(String userId, ITicket ticket) {
+    public boolean bookTicket(String userId, Ticket ticket) {
         validateTicketId(ticket.getId().toString());
         List<String> ticketIds = userTicketIds.get(userId);
         if (ticketIds == null) {
@@ -100,7 +100,7 @@ public class MemoryTicketRepository {
         ticketIds.add(ticket.getId().toString());
         userTicketIds.put(userId, ticketIds);
         // update ticket status and category
-        ITicket storedTicket = ticketMap.get(ticket.getId());
+        Ticket storedTicket = ticketMap.get(ticket.getId());
         storedTicket.setStatus(TicketStatus.BOOKED);
         storedTicket.setCategory(ticket.getCategory());
         updateTicket(storedTicket);
@@ -116,7 +116,7 @@ public class MemoryTicketRepository {
         }
     }
 
-    public ITicket getById(String id) {
+    public Ticket getById(String id) {
         return ticketMap.get(id);
     }
 

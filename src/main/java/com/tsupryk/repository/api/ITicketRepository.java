@@ -1,6 +1,6 @@
 package com.tsupryk.repository.api;
 
-import com.tsupryk.api.ITicket;
+import com.tsupryk.api.Ticket;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import java.util.List;
  */
 public interface ITicketRepository {
 
-    public List<ITicket> getTickets(IFiltrable filter);
+    public List<Ticket> getTickets(IFiltrable filter);
 
-    public boolean updateTicket(ITicket ticket);
+    public boolean updateTicket(Ticket ticket);
 
-    public ITicket getById(Integer id);
+    public Ticket getById(Integer id);
 
 }

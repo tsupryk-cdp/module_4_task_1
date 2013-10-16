@@ -37,7 +37,7 @@ public class JsonTicketController implements IJsonTicketController {
         if (TicketUtil.isEmpty(filmName) && TicketUtil.isEmpty(filmStartDate) && TicketUtil.isEmpty(ticketCategory)) {
             return new RestResponse(FAIL, EMPTY_FILTER_FIELDS);
         }
-        List<ITicket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
+        List<Ticket> availableTickets = ticketService.getAvailableTickets(filmName, filmStartDate, ticketCategory);
         RestResponse response = new RestResponse(SUCCESS, availableTickets);
         return response;
     }
@@ -80,7 +80,7 @@ public class JsonTicketController implements IJsonTicketController {
                 && TicketUtil.isEmpty(ticketCategory)) {
             return new RestResponse(FAIL, EMPTY_FILTER_FIELDS);
         }
-        List<ITicket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
+        List<Ticket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
         RestResponse response = new RestResponse(SUCCESS, tickets);
         return response;
     }

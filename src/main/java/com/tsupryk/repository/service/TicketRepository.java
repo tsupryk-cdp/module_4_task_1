@@ -1,14 +1,12 @@
 package com.tsupryk.repository.service;
 
-import com.tsupryk.api.ITicket;
 import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
 import com.tsupryk.api.TicketStatus;
 import com.tsupryk.repository.api.IFiltrable;
 import com.tsupryk.repository.api.ITicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -41,22 +39,22 @@ public class TicketRepository implements ITicketRepository {
 
 
     @Override
-    public List<ITicket> getTickets(IFiltrable filter) {
+    public List<Ticket> getTickets(IFiltrable filter) {
         String query = createQueryWithFilter(BASE_SELECT, filter);
         SqlParameterSource parameterSource = createMapSource(filter);
-        return namedParameterJdbcTemplate.query(query, parameterSource, ticketRowMapper);
+        return namedParameterJdbcTemplate.query(query, parameterSource, new BeanPropertyRowMapper<Ticket>(Ticket.class));
     }
 
     @Override
-    public boolean updateTicket(ITicket ticket) {
+    public boolean updateTicket(Ticket ticket) {
         namedParameterJdbcTemplate.update(BASE_UPDATE_BY_ID, createMapSource(ticket));
         return true;
     }
 
     @Override
-    public ITicket getById(Integer id) {
-        List<ITicket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
-                ticketRowMapper);
+    public Ticket getById(Integer id) {
+        List<Ticket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
+                new BeanPropertyRowMapper<Ticket>(Ticket.class));
         return tickets.get(0);
     }
 
@@ -65,23 +63,27 @@ public class TicketRepository implements ITicketRepository {
         if (obj instanceof IFiltrable) {
             IFiltrable filter = (IFiltrable) obj;
             source = new MapSqlParameterSource()
-                    .addValue("status", filter.getTicketStatus() == null ? null : filter.getTicketStatus().toString())
+                    .addValue("status", getValue(filter.getTicketStatus()))
                     .addValue("filmName", filter.getFilmName())
                     .addValue("filmStartDate", filter.getFilmStartDate())
-                    .addValue("category", filter.getCategory() == null ? null : filter.getCategory().toString())
+                    .addValue("category", getValue(filter.getCategory()))
                     .addValue("userId", filter.getUserId());
-        } else if (obj instanceof ITicket) {
-            ITicket ticket = (ITicket) obj;
+        } else if (obj instanceof Ticket) {
+            Ticket ticket = (Ticket) obj;
             source = new MapSqlParameterSource()
-                    .addValue("status", ticket.getStatus() == null ? null : ticket.getStatus().toString())
+                    .addValue("status", getValue(ticket.getStatus()))
                     .addValue("filmName", ticket.getFilmName())
                     .addValue("filmStartDate", ticket.getFilmStartDate())
-                    .addValue("category", ticket.getCategory() == null ? null : ticket.getCategory().toString())
+                    .addValue("category", getValue(ticket.getCategory()))
                     .addValue("userId", ticket.getUserId())
                     .addValue("placeNumber", ticket.getPlaceNumber())
                     .addValue("id", ticket.getId());
         }
         return source;
+    }
+
+    private String getValue(Object obj) {
+        return obj == null ? null : obj.toString();
     }
 
     private String createQueryWithFilter(String baseSql, IFiltrable filter) {
@@ -121,8 +123,8 @@ public class TicketRepository implements ITicketRepository {
     }
 
 
-    private ITicket extractTicket(ResultSet rs) throws SQLException {
-        ITicket ticket = new Ticket();
+    private Ticket extractTicket(ResultSet rs) throws SQLException {
+        Ticket ticket = new Ticket();
         ticket.setId(rs.getInt("id"));
         ticket.setPlaceNumber(rs.getInt("place_number"));
         ticket.setStatus(TicketStatus.valueOf(rs.getString("status")));
@@ -133,11 +135,11 @@ public class TicketRepository implements ITicketRepository {
         return ticket;
     }
 
-    private RowMapper<ITicket> ticketRowMapper = new RowMapper<ITicket>() {
+    private RowMapper<Ticket> ticketRowMapper = new RowMapper<Ticket>() {
 
         @Override
-        public ITicket mapRow(ResultSet rs, int rowNum) throws SQLException {
-            ITicket ticket = extractTicket(rs);
+        public Ticket mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Ticket ticket = extractTicket(rs);
             return ticket;
         }
     };

@@ -1,7 +1,6 @@
 package com.tsupryk.service.api;
 
 
-import com.tsupryk.api.ITicket;
 import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
 
@@ -14,10 +13,10 @@ import java.util.List;
  */
 public interface ITicketService {
 
-    public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public List<Ticket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
     public boolean bookTickets(Integer userId, List<Ticket> ticketList);
 
-    public List<ITicket> getBookedTickets(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
+    public List<Ticket> getBookedTickets(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
 }

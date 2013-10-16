@@ -1,6 +1,5 @@
 package com.tsupryk.service.util;
 
-import com.tsupryk.api.ITicket;
 import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.Ticket;
 import org.springframework.util.StringUtils;
@@ -20,7 +19,7 @@ public class TicketUtil {
     }
 
     public static void validateTickets(List<Ticket> ticketList) {
-        for (ITicket ticket : ticketList) {
+        for (Ticket ticket : ticketList) {
             checkField(ticket.getId(), "Wrong or empty field Id.");
             checkField(ticket.getCategory(), "Wrong or empty field Category.");
         }

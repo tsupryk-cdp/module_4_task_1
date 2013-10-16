@@ -7,7 +7,6 @@ import com.tsupryk.service.api.ITicketService;
 import com.tsupryk.service.util.FilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -22,18 +21,18 @@ public class TicketService implements ITicketService {
     private ITicketRepository ticketRepository;
 
     @Override
-    public List<ITicket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
+    public List<Ticket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
         IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
-        List<ITicket> tickets = ticketRepository.getTickets(filter);
+        List<Ticket> tickets = ticketRepository.getTickets(filter);
         Collections.sort(tickets, ticketPlaceComparator);
         return tickets;
     }
 
     @Override
     public boolean bookTickets(Integer userId, List<Ticket> ticketList) {
-        List<ITicket> storedTickets = new ArrayList<>();
-        for (ITicket ticket : ticketList) {
-            ITicket storedTicket = ticketRepository.getById(ticket.getId());
+        List<Ticket> storedTickets = new ArrayList<>();
+        for (Ticket ticket : ticketList) {
+            Ticket storedTicket = ticketRepository.getById(ticket.getId());
             if(storedTicket == null) {
                 throw new ServiceRuntimeException("The ticket with id = " + ticket.getId() + " doesn't exist.");
             } else if (storedTicket.getStatus() == TicketStatus.BOOKED){
@@ -47,24 +46,24 @@ public class TicketService implements ITicketService {
                 storedTickets.add(storedTicket);
             }
         }
-        for (ITicket ticket : storedTickets) {
+        for (Ticket ticket : storedTickets) {
             ticketRepository.updateTicket(ticket);
         }
         return true;
     }
 
     @Override
-    public List<ITicket> getBookedTickets(Integer userId, String filmName, Date filmStartDate,
-                  TicketCategory ticketCategory) {
+    public List<Ticket> getBookedTickets(Integer userId, String filmName, Date filmStartDate,
+                                         TicketCategory ticketCategory) {
         IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
-        List<ITicket> tickets = ticketRepository.getTickets(filter);
+        List<Ticket> tickets = ticketRepository.getTickets(filter);
         Collections.sort(tickets, ticketPlaceComparator);
         return tickets;
     }
 
-    private Comparator<ITicket> ticketPlaceComparator = new Comparator<ITicket>() {
+    private Comparator<Ticket> ticketPlaceComparator = new Comparator<Ticket>() {
         @Override
-        public int compare(ITicket o1, ITicket o2) {
+        public int compare(Ticket o1, Ticket o2) {
             return o1.getPlaceNumber() - o2.getPlaceNumber();
         }
     };
