@@ -7,6 +7,9 @@ import com.tsupryk.service.api.ITicketService;
 import com.tsupryk.service.util.FilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -29,6 +32,7 @@ public class TicketService implements ITicketService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean bookTickets(Integer userId, List<Ticket> ticketList) {
         List<Ticket> storedTickets = new ArrayList<>();
         for (Ticket ticket : ticketList) {
