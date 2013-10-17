@@ -26,13 +26,13 @@ import java.util.List;
 @Repository
 public class TicketRepository implements ITicketRepository {
 
-    private static final String BASE_SELECT = "SELECT * FROM app.tickets";
+    private static final String BASE_SELECT = "SELECT * FROM tickets";
 
-    private static final String BASE_UPDATE_BY_ID = "UPDATE app.tickets SET user_id = :userId, film_name = :filmName, category = :category, " +
+    private static final String BASE_UPDATE_BY_ID = "UPDATE tickets SET user_id = :userId, film_name = :filmName, category = :category, " +
             "film_start_date = :filmStartDate, place_number = :placeNumber, status = :status WHERE id = :id";
 
     private static final String SELECT_BY_ID = "SELECT id, user_id, film_name, category, film_start_date, place_number, status " +
-            "FROM app.tickets WHERE id = :id";
+            "FROM tickets WHERE id = :id";
 
 
     @Autowired
