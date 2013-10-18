@@ -37,17 +37,31 @@ public class PropagationTest {
     /**
      * Both repository and service has propagation = Propagation.REQUIRES_NEW.
      * Repository fails, service not.
-     * Hence there should be only 2 tickets, in service.
+     * Hence there should be only 2 tickets, inserted in service.
      */
     @Test
-    public void testBothRequiresNew() {
+    public void testBothRequiresNewFallInner() {
         try {
             service.insertRequiresNew(false, true);
         } catch (RuntimeException ex) {
 
         }
         List<Ticket> tickets = repository.selectAll();
-        assertTickets(tickets, 2, 20);
+        assertTickets(tickets, 2);
+    }
+
+    /**
+     * Both repository and service has propagation = Propagation.REQUIRES_NEW.
+     * Service fails, repository not.
+     * Hence there should be only 1 ticket, inserted in repository.
+     */
+    @Test
+    public void testRequiresNewFallOuter() {
+        try {
+            service.insertRequiresNew(true, false);
+        } catch (RuntimeException ex) { }
+        List<Ticket> tickets = repository.selectAll();
+        assertTickets(tickets, 1);
     }
 
     /**
@@ -56,7 +70,7 @@ public class PropagationTest {
      * Hence there should be no tickets because 2 calls results in one transaction.
      */
     @Test
-    public void testBothRequired() {
+    public void testBothRequiredFallInner() {
         // falls repository
         try {
             service.insertRequired(false, true);
@@ -65,12 +79,11 @@ public class PropagationTest {
         assertTrue(tickets.size() == 0);
     }
 
-    private void assertTickets(List<Ticket> tickets, int size, int ids) {
+    private void assertTickets(List<Ticket> tickets, int size) {
         showTickets(tickets);
         assertTrue(tickets.size() == size);
         for (Ticket t : tickets) {
             assertNotNull(t);
-            assertTrue(t.getId() < ids);
         }
     }
 
