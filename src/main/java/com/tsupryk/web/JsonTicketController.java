@@ -85,4 +85,13 @@ public class JsonTicketController implements IJsonTicketController {
         return response;
     }
 
+    @Override
+    @ResponseBody
+    @RequestMapping(value = "/init.json", produces = "application/json", method = RequestMethod.GET)
+    public Object initTickets() {
+        ticketService.initTickets();
+        RestResponse response = new RestResponse(SUCCESS, null);
+        return response;
+    }
+
 }

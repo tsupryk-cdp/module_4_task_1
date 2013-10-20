@@ -72,6 +72,21 @@ public class PdfTicketController implements IPdfTicketController {
     }
 
     @Override
+    @ResponseBody
+    @RequestMapping(value = "/init.pdf", produces = "application/json", method = RequestMethod.GET)
+    public Object initTickets() {
+        RestResponse response = null;
+        boolean result = ticketService.initTickets();
+        if (result) {
+            response = new RestResponse(SUCCESS, null);
+        } else {
+            response = new RestResponse(FAIL, null);
+        }
+        ModelAndView modelAndView = createModelAndView(Arrays.asList(response), "infoPdfReport");
+        return modelAndView;
+    }
+
+    @Override
     @RequestMapping(value = "/tickets/booked/{" + USER_ID + "}.pdf", method = RequestMethod.GET)
     public ModelAndView getBookedTickets(@PathVariable(USER_ID) Integer userId,
                                          @RequestParam(required = false) String filmName,

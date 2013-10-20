@@ -2,13 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://www.springframework.org/schema/tx
-                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-                            http://www.springframework.org/schema/jdbc
-                            http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" >
         <property name="driverClassName" value="${jdbc.driverClassName}" />
@@ -23,15 +20,27 @@
         <constructor-arg ref="dataSource" />
     </bean>
 
-
-    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
-        <jdbc:script location="classpath:h2_scheme.sql" />
-    </jdbc:initialize-database>
-
     <tx:annotation-driven transaction-manager="txManager"/>
 
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name = "sessionFactory" ref = "sessionFactory" />
     </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.tsupryk.api.Ticket</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.createSchemeOnStart}</prop>
+                <prop key="hibernate.show_sql">${hibernate.showSqlInLog}</prop>
+            </props>
+        </property>
+    </bean>
+
 
 </beans>

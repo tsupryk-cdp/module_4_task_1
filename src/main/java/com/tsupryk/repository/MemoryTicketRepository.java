@@ -17,7 +17,7 @@ public class MemoryTicketRepository {
 
     private Map<String, List<String>> userTicketIds;
 
-    @Value("${cinema.film.place.count}")
+//    @Value("${cinema.film.place.count}")
     private Integer placeCount;
 
     @PostConstruct

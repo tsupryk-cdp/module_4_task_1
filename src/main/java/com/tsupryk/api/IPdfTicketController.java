@@ -20,4 +20,5 @@ public interface IPdfTicketController {
 
     public ModelAndView bookTickets(Integer userId, List<Ticket> ticketList);
 
+    Object initTickets();
 }

@@ -1,5 +1,9 @@
 package com.tsupryk.api;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -8,8 +12,11 @@ import java.util.Date;
  * User: Vitaliy
  * Date: 06.10.13
  */
+@Entity
 public class Ticket {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String filmName;
     private Date filmStartDate;

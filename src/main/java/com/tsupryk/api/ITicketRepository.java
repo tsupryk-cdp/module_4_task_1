@@ -1,5 +1,7 @@
 package com.tsupryk.api;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -14,4 +16,5 @@ public interface ITicketRepository {
 
     public Ticket getById(Integer id);
 
+    void initTickets();
 }

@@ -23,7 +23,7 @@ import java.util.List;
  * User: Vitaliy
  * Date: 12.10.13
  */
-@Repository
+//@Repository
 public class TicketRepository implements ITicketRepository {
 
     private static final String BASE_SELECT = "SELECT * FROM tickets";
@@ -57,6 +57,11 @@ public class TicketRepository implements ITicketRepository {
         List<Ticket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
                 new BeanPropertyRowMapper<>(Ticket.class));
         return tickets.get(0);
+    }
+
+    @Override
+    public void initTickets() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     private SqlParameterSource createMapSource(Object obj) {

@@ -23,6 +23,7 @@ public class TicketService implements ITicketService {
     private ITicketRepository ticketRepository;
 
     @Override
+    @Transactional
     public List<Ticket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
         IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
         List<Ticket> tickets = ticketRepository.getTickets(filter);
@@ -55,13 +56,23 @@ public class TicketService implements ITicketService {
         return true;
     }
 
+    //TODO @Transactional ???
     @Override
+    @Transactional
     public List<Ticket> getBookedTickets(Integer userId, String filmName, Date filmStartDate,
                                          TicketCategory ticketCategory) {
         IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
         List<Ticket> tickets = ticketRepository.getTickets(filter);
         Collections.sort(tickets, ticketPlaceComparator);
         return tickets;
+    }
+
+    //TODO @Transactional ???
+    @Override
+    @Transactional
+    public boolean initTickets() {
+        ticketRepository.initTickets();
+        return true;
     }
 
     private Comparator<Ticket> ticketPlaceComparator = new Comparator<Ticket>() {

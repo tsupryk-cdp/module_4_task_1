@@ -2,6 +2,9 @@ package com.tsupryk.api;
 
 import com.tsupryk.api.Ticket;
 import com.tsupryk.api.TicketCategory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
 import java.util.List;
@@ -19,4 +22,5 @@ public interface IJsonTicketController {
 
     public Object getBookedTicketsJson(Integer userId, String filmName, Date filmStartDate, TicketCategory ticketCategory);
 
+    Object initTickets();
 }
