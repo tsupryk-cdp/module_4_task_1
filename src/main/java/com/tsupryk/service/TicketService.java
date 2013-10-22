@@ -7,23 +7,27 @@ import com.tsupryk.api.ITicketService;
 import com.tsupryk.util.FilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * The Class JsonService.
  * Date: 06.09.13
  */
 @Service
+@Transactional
 public class TicketService implements ITicketService {
 
     @Autowired
     private ITicketRepository ticketRepository;
 
+    @Autowired
+    private IUserRepository userRepository;
+
     @Override
-    @Transactional
     public List<Ticket> getAvailableTickets(String filmName, Date filmStartDate, TicketCategory ticketCategory) {
         IFiltrable filter = FilterBuilder.buildFreeTicketsFilter(filmName, filmStartDate, ticketCategory);
         List<Ticket> tickets = ticketRepository.getTickets(filter);
@@ -32,9 +36,11 @@ public class TicketService implements ITicketService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean bookTickets(Integer userId, List<Ticket> ticketList) {
         List<Ticket> storedTickets = new ArrayList<>();
+        if (userRepository.getById(userId) == null) {
+            throw new ServiceRuntimeException("The user with id = " + userId + " doesn't exist.");
+        }
         for (Ticket ticket : ticketList) {
             Ticket storedTicket = ticketRepository.getById(ticket.getId());
             if(storedTicket == null) {
@@ -46,8 +52,8 @@ public class TicketService implements ITicketService {
                 // updating necessary fields
                 storedTicket.setCategory(ticket.getCategory());
                 storedTicket.setStatus(TicketStatus.BOOKED);
-                storedTicket.setUserId(userId);
                 storedTickets.add(storedTicket);
+                storedTicket.setUser(userRepository.getById(userId));
             }
         }
         for (Ticket ticket : storedTickets) {
@@ -56,20 +62,19 @@ public class TicketService implements ITicketService {
         return true;
     }
 
-    //TODO @Transactional ???
     @Override
-    @Transactional
     public List<Ticket> getBookedTickets(Integer userId, String filmName, Date filmStartDate,
                                          TicketCategory ticketCategory) {
+        if (userRepository.getById(userId) == null) {
+            throw new ServiceRuntimeException("There is no user with id = " + userId);
+        }
         IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
         List<Ticket> tickets = ticketRepository.getTickets(filter);
         Collections.sort(tickets, ticketPlaceComparator);
         return tickets;
     }
 
-    //TODO @Transactional ???
     @Override
-    @Transactional
     public boolean initTickets() {
         ticketRepository.initTickets();
         return true;

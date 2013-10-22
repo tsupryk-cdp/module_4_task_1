@@ -1,9 +1,6 @@
 package com.tsupryk.api;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -18,13 +15,19 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String filmName;
+
     private Date filmStartDate;
+
     private TicketCategory category;
+
     private Integer placeNumber;
 
     private TicketStatus status;
-    private Integer userId;
+
+    @ManyToOne
+    private User user;
 
     public Integer getId() {
         return id;
@@ -74,11 +77,11 @@ public class Ticket {
         this.status = status;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -117,7 +117,12 @@ public class HibernateTicketRepository implements ITicketRepository {
             appendParam(sql, CATEGORY);
         }
         if (filter.getUserId() != null) {
-            appendParam(sql, USER_ID);
+            if (sql.lastIndexOf("WHERE") != sql.length() - 5) {
+                sql.append(" AND ");
+            } else {
+                sql.append(" ");
+            }
+            sql.append("user.id=:" + USER_ID);
         }
 
         return sql.toString();

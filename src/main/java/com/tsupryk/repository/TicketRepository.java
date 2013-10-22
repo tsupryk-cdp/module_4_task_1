@@ -81,7 +81,6 @@ public class TicketRepository implements ITicketRepository {
                     .addValue("filmName", ticket.getFilmName())
                     .addValue("filmStartDate", ticket.getFilmStartDate())
                     .addValue("category", getValue(ticket.getCategory()))
-                    .addValue("userId", ticket.getUserId())
                     .addValue("placeNumber", ticket.getPlaceNumber())
                     .addValue("id", ticket.getId());
         }

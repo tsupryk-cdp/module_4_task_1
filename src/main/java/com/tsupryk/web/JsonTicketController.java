@@ -27,6 +27,9 @@ public class JsonTicketController implements IJsonTicketController {
     @Autowired
     private ITicketService ticketService;
 
+    @Autowired
+    private IUserService userService;
+
     @Override
     @ResponseBody
     @RequestMapping(value = "/tickets.json", produces = "application/json", method = RequestMethod.GET)
@@ -80,8 +83,14 @@ public class JsonTicketController implements IJsonTicketController {
                 && TicketUtil.isEmpty(ticketCategory)) {
             return new RestResponse(FAIL, EMPTY_FILTER_FIELDS);
         }
-        List<Ticket> tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
-        RestResponse response = new RestResponse(SUCCESS, tickets);
+        RestResponse response = null;
+        List<Ticket> tickets = null;
+        try {
+            tickets = ticketService.getBookedTickets(userId, filmName, filmStartDate, ticketCategory);
+            response = new RestResponse(SUCCESS, tickets);
+        } catch (ServiceRuntimeException e) {
+            response = new RestResponse(FAIL, e.getMessage());
+        }
         return response;
     }
 
@@ -90,6 +99,7 @@ public class JsonTicketController implements IJsonTicketController {
     @RequestMapping(value = "/init.json", produces = "application/json", method = RequestMethod.GET)
     public Object initTickets() {
         ticketService.initTickets();
+        userService.init();
         RestResponse response = new RestResponse(SUCCESS, null);
         return response;
     }

@@ -31,6 +31,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>com.tsupryk.api.Ticket</value>
+                <value>com.tsupryk.api.User</value>
             </list>
         </property>
         <property name="hibernateProperties">
