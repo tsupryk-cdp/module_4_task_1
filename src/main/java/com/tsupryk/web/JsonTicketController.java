@@ -22,7 +22,8 @@ public class JsonTicketController implements IJsonTicketController {
     private static final String USER_ID = "userId";
     private static final String SUCCESS = "SUCCESS";
     private static final String FAIL = "FAIL";
-    private static final String EMPTY_FILTER_FIELDS = "You should sprecify at least one parameter: filmName, filmStartDate or ticketCategory";
+    private static final String EMPTY_FILTER_FIELDS = "You should sprecify at least one parameter: " +
+            "filmName, filmStartDate or ticketCategory";
 
     @Autowired
     private ITicketService ticketService;

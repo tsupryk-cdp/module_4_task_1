@@ -29,7 +29,7 @@ public interface IFiltrable {
 
     public void setUserId(Integer userId);
 
-    TicketStatus getTicketStatus();
+    TicketStatus getStatus();
 
-    void setTicketStatus(TicketStatus ticketStatus);
+    void setStatus(TicketStatus ticketStatus);
 }

@@ -38,7 +38,8 @@ public class TicketService implements ITicketService {
     @Override
     public boolean bookTickets(Integer userId, List<Ticket> ticketList) {
         List<Ticket> storedTickets = new ArrayList<>();
-        if (userRepository.getById(userId) == null) {
+        User user = userRepository.getById(userId);
+        if (user == null) {
             throw new ServiceRuntimeException("The user with id = " + userId + " doesn't exist.");
         }
         for (Ticket ticket : ticketList) {
@@ -53,7 +54,7 @@ public class TicketService implements ITicketService {
                 storedTicket.setCategory(ticket.getCategory());
                 storedTicket.setStatus(TicketStatus.BOOKED);
                 storedTickets.add(storedTicket);
-                storedTicket.setUser(userRepository.getById(userId));
+                storedTicket.setUser(user);
             }
         }
         for (Ticket ticket : storedTickets) {
@@ -70,6 +71,9 @@ public class TicketService implements ITicketService {
         }
         IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);
         List<Ticket> tickets = ticketRepository.getTickets(filter);
+        for (Ticket t : tickets) {
+            t.getUser().setUserTickets(null);
+        }
         Collections.sort(tickets, ticketPlaceComparator);
         return tickets;
     }

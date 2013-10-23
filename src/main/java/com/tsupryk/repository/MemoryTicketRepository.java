@@ -2,7 +2,6 @@ package com.tsupryk.repository;
 
 import com.tsupryk.api.*;
 import com.tsupryk.api.IFiltrable;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -52,9 +51,9 @@ public class MemoryTicketRepository {
     public List<Ticket> getTickets(IFiltrable filter) {
         List<Ticket> tickets = new ArrayList<>();
         Collection<Ticket> storedTickets = null;
-        if (filter.getTicketStatus() == TicketStatus.FREE) {
+        if (filter.getStatus() == TicketStatus.FREE) {
             storedTickets = ticketMap.values();
-        } else if (filter.getTicketStatus() == TicketStatus.BOOKED) {
+        } else if (filter.getStatus() == TicketStatus.BOOKED) {
             storedTickets = new ArrayList<>();
             List<String> userTickets = userTicketIds.get(filter.getUserId());
             if (userTickets != null) {
@@ -65,7 +64,7 @@ public class MemoryTicketRepository {
         }
         // filter tickets
         for (Ticket ticket : storedTickets) {
-            if (ticket.getStatus() == filter.getTicketStatus()) {
+            if (ticket.getStatus() == filter.getStatus()) {
                 if (filter.getCategory() != null && filter.getCategory() != ticket.getCategory()) {
                     continue;
                 }

@@ -1,94 +1,82 @@
 package com.tsupryk.repository;
 
-import com.tsupryk.api.Ticket;
-import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketStatus;
-import com.tsupryk.api.IFiltrable;
-import com.tsupryk.api.ITicketRepository;
+import com.tsupryk.api.*;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
  * The class TicketRepository.
  * <p/>
  * User: Vitaliy
- * Date: 12.10.13
+ * Date: 20.10.13
  */
-//@Repository
+@Repository
 public class TicketRepository implements ITicketRepository {
 
-    private static final String BASE_SELECT = "SELECT * FROM tickets";
+    private static final String BASE_SELECT = "from com.tsupryk.api.Ticket";
+    private static final String SELECT_BY_ID = "from com.tsupryk.api.Ticket where id=:id";
 
-    private static final String BASE_UPDATE_BY_ID = "UPDATE tickets SET user_id = :userId, film_name = :filmName, category = :category, " +
-            "film_start_date = :filmStartDate, place_number = :placeNumber, status = :status WHERE id = :id";
-
-    private static final String SELECT_BY_ID = "SELECT id, user_id, film_name, category, film_start_date, place_number, status " +
-            "FROM tickets WHERE id = :id";
-
+    private static final String ID = "id";
+    private static final String STATUS = "status";
+    private static final String FILM_NAME = "filmName";
+    private static final String FILM_START_DATE = "filmStartDate";
+    private static final String CATEGORY = "category";
+    private static final String USER_ID = "userId";
 
     @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private SessionFactory factory;
 
+    @Override
+    public void initTickets() {
+        int count = 0;
+        for (int j = 0; j < 2; j++) {
+            for (int i = 1; i <= 10; i++) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(new Date());
+                calendar.add(Calendar.DAY_OF_MONTH, 5 + j);
+
+                Ticket ticket = new Ticket();
+                ticket.setId(count++);
+                ticket.setStatus(TicketStatus.FREE);
+                ticket.setCategory(TicketCategory.STANDARD);
+                if (j > 0) {
+                    ticket.setFilmName("Terminator");
+                } else {
+                    ticket.setFilmName("Independence Day");
+                }
+                ticket.setFilmStartDate(calendar.getTime());
+                ticket.setPlaceNumber(i);
+
+                getSession().save(ticket);
+            }
+        }
+
+    }
 
     @Override
     public List<Ticket> getTickets(IFiltrable filter) {
-        String query = createQueryWithFilter(BASE_SELECT, filter);
-        SqlParameterSource parameterSource = createMapSource(filter);
-        return namedParameterJdbcTemplate.query(query, parameterSource, new BeanPropertyRowMapper<>(Ticket.class));
+        Query query =  getSession().createQuery(createQueryWithFilter(BASE_SELECT, filter));
+        return query.setProperties(filter).list();
     }
 
     @Override
     public boolean updateTicket(Ticket ticket) {
-        namedParameterJdbcTemplate.update(BASE_UPDATE_BY_ID, createMapSource(ticket));
+        getSession().update(ticket);
         return true;
     }
 
     @Override
     public Ticket getById(Integer id) {
-        List<Ticket> tickets = namedParameterJdbcTemplate.query(SELECT_BY_ID, new MapSqlParameterSource().addValue("id", id),
-                new BeanPropertyRowMapper<>(Ticket.class));
-        return tickets.get(0);
+        return (Ticket) getSession().createQuery(SELECT_BY_ID).setParameter(ID, id).uniqueResult();
     }
 
-    @Override
-    public void initTickets() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    private SqlParameterSource createMapSource(Object obj) {
-        SqlParameterSource source = null;
-        if (obj instanceof IFiltrable) {
-            IFiltrable filter = (IFiltrable) obj;
-            source = new MapSqlParameterSource()
-                    .addValue("status", getValue(filter.getTicketStatus()))
-                    .addValue("filmName", filter.getFilmName())
-                    .addValue("filmStartDate", filter.getFilmStartDate())
-                    .addValue("category", getValue(filter.getCategory()))
-                    .addValue("userId", filter.getUserId());
-        } else if (obj instanceof Ticket) {
-            Ticket ticket = (Ticket) obj;
-            source = new MapSqlParameterSource()
-                    .addValue("status", getValue(ticket.getStatus()))
-                    .addValue("filmName", ticket.getFilmName())
-                    .addValue("filmStartDate", ticket.getFilmStartDate())
-                    .addValue("category", getValue(ticket.getCategory()))
-                    .addValue("placeNumber", ticket.getPlaceNumber())
-                    .addValue("id", ticket.getId());
-        }
-        return source;
-    }
-
-    private String getValue(Object obj) {
-        return obj == null ? null : obj.toString();
+    private Session getSession() {
+        return factory.getCurrentSession();
     }
 
     private String createQueryWithFilter(String baseSql, IFiltrable filter) {
@@ -96,29 +84,33 @@ public class TicketRepository implements ITicketRepository {
 
         sql.append(" WHERE");
 
-        if (filter.getTicketStatus() != null) {
-            appendParam(sql, "status", "status");
+        if (filter.getStatus() != null) {
+            appendParam(sql, STATUS);
         }
         if (filter.getFilmName() != null) {
-            appendParam(sql, "film_name", "filmName");
+            appendParam(sql, FILM_NAME);
         }
         if (filter.getFilmStartDate() != null) {
-            appendParam(sql, "film_start_date", "filmStartDate");
+            appendParam(sql, FILM_START_DATE);
         }
         if (filter.getCategory() != null) {
-            appendParam(sql, "category", "category");
+            appendParam(sql, CATEGORY);
         }
         if (filter.getUserId() != null) {
-            appendParam(sql, "user_id", "userId");
+            if (sql.lastIndexOf("WHERE") != sql.length() - 5) {
+                sql.append(" AND ");
+            } else {
+                sql.append(" ");
+            }
+            sql.append("user.id=:" + USER_ID);
         }
 
         return sql.toString();
     }
 
-    private void appendParam(StringBuilder sql, String tableFieldName, String objectFieldName) {
-        String stringParam = "? = :$";
-        stringParam = stringParam.replace("?", tableFieldName);
-        stringParam = stringParam.replace("$", objectFieldName);
+    private void appendParam(StringBuilder sql, String fieldName) {
+        String stringParam = "? = :?";
+        stringParam = stringParam.replace("?", fieldName);
         if (sql.lastIndexOf("WHERE") != sql.length() - 5) {
             sql.append(" AND ");
         } else {

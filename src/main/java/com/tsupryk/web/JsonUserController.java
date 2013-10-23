@@ -1,9 +1,6 @@
 package com.tsupryk.web;
 
-import com.tsupryk.api.IJsonUserController;
-import com.tsupryk.api.IUserService;
-import com.tsupryk.api.RestResponse;
-import com.tsupryk.api.User;
+import com.tsupryk.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class JsonUserController implements IJsonUserController {
 
     private static final String SUCCESS = "SUCCESS";
+    private static final String FAIL = "FAIL";
 
     @Autowired
     private IUserService userService;
@@ -28,9 +26,12 @@ public class JsonUserController implements IJsonUserController {
     @RequestMapping(value = "/create.json", produces = "application/json", method = RequestMethod.POST)
     public Object createUser(@RequestBody User user) {
         RestResponse response = null;
-
-        response = new RestResponse(SUCCESS, null);
-
+        try {
+            userService.createUser(user);
+            response = new RestResponse(SUCCESS, null);
+        } catch (ServiceRuntimeException e) {
+            response = new RestResponse(FAIL, e.getMessage());
+        }
         return response;
     }
 

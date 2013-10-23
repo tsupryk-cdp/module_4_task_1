@@ -2,10 +2,12 @@ package com.tsupryk.service;
 
 import com.tsupryk.api.IUserRepository;
 import com.tsupryk.api.IUserService;
+import com.tsupryk.api.Ticket;
 import com.tsupryk.api.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class UserService implements IUserService {
     public void createUser(User user) {
         user.setId(null);
         user.setUserTickets(null);
+        repository.insert(user);
     }
 
     @Override
@@ -41,7 +44,13 @@ public class UserService implements IUserService {
     @Override
     public List<User> getAllUsers() {
         List<User> users = repository.getAllUsers();
-        users.get(0).getUserTickets().size();
+        for (User user : users) {
+            if (!CollectionUtils.isEmpty(user.getUserTickets())) {
+                for (Ticket ticket : user.getUserTickets()) {
+                    ticket.setUser(null);
+                }
+            };
+        }
         return users;
     }
 }

@@ -17,16 +17,16 @@ public class TicketFilter implements IFiltrable {
     private String filmName;
     private Date filmStartDate;
     private TicketCategory category;
-    private TicketStatus ticketStatus;
+    private TicketStatus status;
 
     private Integer userId;
 
-    public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketStatus ticketStatus,
+    public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketStatus status,
                         Integer userId) {
         this.filmName = filmName;
         this.filmStartDate = filmStartDate;
         this.category = category;
-        this.ticketStatus = ticketStatus;
+        this.status = status;
         this.userId = userId;
     }
 
@@ -71,12 +71,12 @@ public class TicketFilter implements IFiltrable {
     }
 
     @Override
-    public TicketStatus getTicketStatus() {
-        return ticketStatus;
+    public TicketStatus getStatus() {
+        return status;
     }
 
     @Override
-    public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;
+    public void setStatus(TicketStatus status) {
+        this.status = status;
     }
 }
