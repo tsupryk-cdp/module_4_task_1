@@ -1,6 +1,6 @@
 package com.tsupryk.api;
 
-import org.springframework.transaction.annotation.Transactional;
+import com.tsupryk.api.entity.Ticket;
 
 import java.util.List;
 

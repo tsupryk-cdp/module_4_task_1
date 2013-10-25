@@ -1,8 +1,8 @@
 package com.tsupryk.api;
 
 
-import com.tsupryk.api.Ticket;
-import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.TicketCategory;
 
 import java.util.Date;
 import java.util.List;

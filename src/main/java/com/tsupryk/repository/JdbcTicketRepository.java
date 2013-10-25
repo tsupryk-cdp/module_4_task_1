@@ -1,6 +1,6 @@
 package com.tsupryk.repository;
 
-import com.tsupryk.api.Ticket;
+import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.api.IFiltrable;
 import com.tsupryk.api.ITicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;

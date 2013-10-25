@@ -1,7 +1,7 @@
 package com.tsupryk.api;
 
-import com.tsupryk.api.Ticket;
-import com.tsupryk.api.TicketCategory;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.TicketCategory;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;

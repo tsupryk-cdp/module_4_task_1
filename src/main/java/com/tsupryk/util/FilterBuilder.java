@@ -1,7 +1,7 @@
 package com.tsupryk.util;
 
-import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketStatus;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
 import com.tsupryk.api.IFiltrable;
 import com.tsupryk.repository.TicketFilter;
 

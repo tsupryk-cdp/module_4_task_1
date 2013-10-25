@@ -30,8 +30,8 @@
         <property name="dataSource" ref="dataSource"/>
         <property name="annotatedClasses">
             <list>
-                <value>com.tsupryk.api.Ticket</value>
-                <value>com.tsupryk.api.User</value>
+                <value>com.tsupryk.api.entity.Ticket</value>
+                <value>com.tsupryk.api.entity.User</value>
             </list>
         </property>
         <property name="hibernateProperties">

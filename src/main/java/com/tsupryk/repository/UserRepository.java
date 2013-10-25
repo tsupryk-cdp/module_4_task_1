@@ -1,7 +1,7 @@
 package com.tsupryk.repository;
 
 import com.tsupryk.api.IUserRepository;
-import com.tsupryk.api.User;
+import com.tsupryk.api.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ import java.util.List;
 @Repository
 public class UserRepository implements IUserRepository {
 
-    private static final String SELECT_BY_ID = "from com.tsupryk.api.User where id=:id";
+    private static final String SELECT_BY_ID = "from com.tsupryk.api.entity.User where id=:id";
     private static final String ID = "id";
-    private static final String SELECT_ALL_USERS = "from com.tsupryk.api.User";
+    private static final String SELECT_ALL_USERS = "from com.tsupryk.api.entity.User";
 
     @Autowired
     private SessionFactory factory;

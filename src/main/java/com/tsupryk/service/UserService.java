@@ -2,8 +2,8 @@ package com.tsupryk.service;
 
 import com.tsupryk.api.IUserRepository;
 import com.tsupryk.api.IUserService;
-import com.tsupryk.api.Ticket;
-import com.tsupryk.api.User;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

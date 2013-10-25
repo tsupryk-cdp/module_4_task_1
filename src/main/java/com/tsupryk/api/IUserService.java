@@ -1,5 +1,7 @@
 package com.tsupryk.api;
 
+import com.tsupryk.api.entity.User;
+
 import java.util.List;
 
 /**

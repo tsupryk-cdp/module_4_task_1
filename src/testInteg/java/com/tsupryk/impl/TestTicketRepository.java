@@ -1,7 +1,6 @@
 package com.tsupryk.impl;
 
-import com.tsupryk.api.Ticket;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tsupryk.api.entity.Ticket;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

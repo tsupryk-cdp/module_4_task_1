@@ -2,6 +2,9 @@ package com.tsupryk.repository;
 
 import com.tsupryk.api.*;
 import com.tsupryk.api.IFiltrable;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
 
 import javax.annotation.PostConstruct;
 import java.util.*;

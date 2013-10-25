@@ -1,6 +1,9 @@
 package com.tsupryk.repository;
 
 import com.tsupryk.api.*;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,8 +21,8 @@ import java.util.*;
 @Repository
 public class TicketRepository implements ITicketRepository {
 
-    private static final String BASE_SELECT = "from com.tsupryk.api.Ticket";
-    private static final String SELECT_BY_ID = "from com.tsupryk.api.Ticket where id=:id";
+    private static final String BASE_SELECT = "from com.tsupryk.api.entity.Ticket";
+    private static final String SELECT_BY_ID = "from com.tsupryk.api.entity.Ticket where id=:id";
 
     private static final String ID = "id";
     private static final String STATUS = "status";

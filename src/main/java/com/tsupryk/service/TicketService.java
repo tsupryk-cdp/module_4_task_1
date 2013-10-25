@@ -4,12 +4,15 @@ import com.tsupryk.api.*;
 import com.tsupryk.api.IFiltrable;
 import com.tsupryk.api.ITicketRepository;
 import com.tsupryk.api.ITicketService;
+import com.tsupryk.api.entity.Ticket;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.api.entity.User;
 import com.tsupryk.util.FilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 

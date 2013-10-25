@@ -1,6 +1,6 @@
 package com.tsupryk.impl;
 
-import com.tsupryk.api.Ticket;
+import com.tsupryk.api.entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

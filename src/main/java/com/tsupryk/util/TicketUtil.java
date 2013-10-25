@@ -1,7 +1,7 @@
 package com.tsupryk.util;
 
 import com.tsupryk.api.ServiceRuntimeException;
-import com.tsupryk.api.Ticket;
+import com.tsupryk.api.entity.Ticket;
 import org.springframework.util.StringUtils;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.tsupryk;
 
-import com.tsupryk.api.Ticket;
+import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.impl.TestTicketRepository;
 import com.tsupryk.impl.TestTicketService;
 import org.junit.After;

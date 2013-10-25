@@ -1,7 +1,7 @@
 package com.tsupryk.api;
 
-import com.tsupryk.api.TicketCategory;
-import com.tsupryk.api.TicketStatus;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
 
 import java.util.Date;
 

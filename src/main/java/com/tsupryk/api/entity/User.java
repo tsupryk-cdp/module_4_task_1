@@ -1,7 +1,6 @@
-package com.tsupryk.api;
+package com.tsupryk.api.entity;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 /**
