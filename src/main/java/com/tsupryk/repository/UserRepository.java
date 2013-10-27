@@ -44,6 +44,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public void init() {
+        getSession().createQuery("delete com.tsupryk.api.entity.User").executeUpdate();
         User user = new User();
         user.setFirstName("ff");
         user.setLastName("ll");

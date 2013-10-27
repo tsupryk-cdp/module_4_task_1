@@ -23,6 +23,7 @@ public class TicketRepository implements ITicketRepository {
 
     private static final String BASE_SELECT = "from com.tsupryk.api.entity.Ticket";
     private static final String SELECT_BY_ID = "from com.tsupryk.api.entity.Ticket where id=:id";
+    private static final String DELETE_ALL = "delete com.tsupryk.api.entity.Ticket";
 
     private static final String ID = "id";
     private static final String STATUS = "status";
@@ -36,6 +37,7 @@ public class TicketRepository implements ITicketRepository {
 
     @Override
     public void initTickets() {
+        getSession().createQuery(DELETE_ALL).executeUpdate();
         int count = 0;
         for (int j = 0; j < 2; j++) {
             for (int i = 1; i <= 10; i++) {

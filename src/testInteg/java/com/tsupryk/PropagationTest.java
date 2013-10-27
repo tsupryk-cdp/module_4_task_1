@@ -5,6 +5,8 @@ import com.tsupryk.impl.TestTicketRepository;
 import com.tsupryk.impl.TestTicketService;
 import org.junit.After;
 import static org.junit.Assert.*;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,7 @@ public class PropagationTest {
      * Hence there should be only 2 tickets, inserted in service.
      */
     @Test
+    @Ignore
     public void testBothRequiresNewFallInner() {
         try {
             service.insertRequiresNew(false, true);
@@ -56,6 +59,7 @@ public class PropagationTest {
      * Hence there should be only 1 ticket, inserted in repository.
      */
     @Test
+    @Ignore
     public void testRequiresNewFallOuter() {
         try {
             service.insertRequiresNew(true, false);
@@ -70,6 +74,7 @@ public class PropagationTest {
      * Hence there should be no tickets because 2 calls results in one transaction.
      */
     @Test
+    @Ignore
     public void testBothRequiredFallInner() {
         // falls repository
         try {

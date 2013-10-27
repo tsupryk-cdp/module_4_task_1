@@ -26,7 +26,7 @@ public class TestTicketRepository {
                                                 "VALUES (:id, null, :filmName, null, null, null, null)";
     private final static String DELETE = "DELETE FROM app.tickets";
 
-    @Resource(name = "testNamedParameterJdbcTemplate")
+//    @Resource(name = "testNamedParameterJdbcTemplate")
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public void insertNotSafe(Ticket ticket) {
