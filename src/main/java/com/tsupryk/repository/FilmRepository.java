@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -37,16 +38,31 @@ public class FilmRepository implements IFilmRepository {
 
     @Override
     public List<Film> findByParameters(String title, String studio, String actor) {
-//        if (title != null) {
-//
+
+        boolean titleExists = title != null;
+        boolean studioExists = studio != null;
+        boolean actorExists = actor != null;
+
+        Criteria criteria = null;
+        if (title != null) {
+            criteria = where("title").is(title).orOperator(where("studio").is(studio), where("actors").is(actor));
+        }
+//        if (studio != null) {
+//            if (criteria == null) {
+//                criteria = where("studio").is(studio);
+//            } else {
+//                criteria = criteria.orOperator(where("studio").is(studio));
+//            }
 //        }
-//        Query query = Query.query()
-//        return operations.find(query(
-//                where("title").is(title)
-//                        .orOperator(where("studio").is("studio"))
-//                        .orOperator(where(actor).in("actor"))
-//        ), Film.class);
-        return null;
+//        if (actor != null) {
+//            if (criteria == null) {
+//                criteria = where("actors").is(actor);
+//            } else {
+//                criteria = criteria.orOperator(where("actors").is(actor));
+//            }
+//        }
+
+        return operations.find(query(criteria), Film.class);
     }
 
     @Override

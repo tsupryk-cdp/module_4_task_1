@@ -29,7 +29,7 @@ public class FilmService implements IFilmService {
 
     @Override
     public List<Film> findByParameter(String title, String studio, String actor) {
-        return null;
+        return repository.findByParameters(title, studio, actor);
     }
 
     @Override

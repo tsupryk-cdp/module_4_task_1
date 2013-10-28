@@ -2,6 +2,7 @@ package com.tsupryk.web;
 
 import com.tsupryk.api.IFilmService;
 import com.tsupryk.api.RestResponse;
+import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.entity.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,13 +28,6 @@ public class JsonFilmController {
     private IFilmService filmService;
 
     @ResponseBody
-    @RequestMapping(value = "/create.json", produces = "application/json", method = RequestMethod.POST)
-    public Object createUser(@RequestBody Film film) {
-
-        return null; // TODO
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/get.json", produces = "application/json", method = RequestMethod.GET)
     public Object getFilmByTitle(@RequestParam String title) {
         return new RestResponse("SUCCESS", filmService.getFilmByTitle(title));
@@ -44,7 +38,16 @@ public class JsonFilmController {
     public Object getFilmByParameter(@RequestParam(required = false) String title,
                                      @RequestParam(required = false) String studio,
                                      @RequestParam(required = false) String actor) {
-        return new RestResponse("SUCCESS", filmService.findByParameter(title, studio, actor));
+        RestResponse response = null;
+        try {
+            if (title == null && studio == null && actor == null) {
+                throw new ServiceRuntimeException("At least one of title, studio, actor parameters should be set.");
+            }
+            response = new RestResponse("SUCCESS", filmService.findByParameter(title, studio, actor));
+        } catch (ServiceRuntimeException e) {
+            response = new RestResponse("FAIL", e.getMessage());
+        }
+        return response;
     }
 
 }
