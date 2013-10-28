@@ -15,21 +15,13 @@ import java.util.List;
 public class Film {
 
     @Id
-    private String id;
-
     private String title;
+
+    private String studio;
 
     private List<String> actors;
 
     private String description;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -53,5 +45,13 @@ public class Film {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
     }
 }

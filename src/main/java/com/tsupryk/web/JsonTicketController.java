@@ -33,6 +33,9 @@ public class JsonTicketController implements IJsonTicketController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IFilmService filmService;
+
     @Override
     @ResponseBody
     @RequestMapping(value = "/tickets.json", produces = "application/json", method = RequestMethod.GET)
@@ -103,6 +106,7 @@ public class JsonTicketController implements IJsonTicketController {
     public Object initTickets() {
         ticketService.initTickets();
         userService.init();
+        filmService.init();
         RestResponse response = new RestResponse(SUCCESS, null);
         return response;
     }
