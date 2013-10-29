@@ -1,5 +1,6 @@
 package com.tsupryk.repository;
 
+import com.mongodb.QueryBuilder;
 import com.tsupryk.api.IFilmRepository;
 import com.tsupryk.api.entity.Film;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,8 @@ import java.util.List;
 @Repository
 public class FilmRepository implements IFilmRepository {
 
-    private MongoOperations operations;
-
     @Autowired
-    public FilmRepository(MongoOperations operations) {
-        this.operations = operations;
-    }
+    private MongoOperations operations;
 
     @Override
     public Film findByTitle(String title) {
@@ -38,30 +35,7 @@ public class FilmRepository implements IFilmRepository {
 
     @Override
     public List<Film> findByParameters(String title, String studio, String actor) {
-
-        boolean titleExists = title != null;
-        boolean studioExists = studio != null;
-        boolean actorExists = actor != null;
-
-        Criteria criteria = null;
-        if (title != null) {
-            criteria = where("title").is(title).orOperator(where("studio").is(studio), where("actors").is(actor));
-        }
-//        if (studio != null) {
-//            if (criteria == null) {
-//                criteria = where("studio").is(studio);
-//            } else {
-//                criteria = criteria.orOperator(where("studio").is(studio));
-//            }
-//        }
-//        if (actor != null) {
-//            if (criteria == null) {
-//                criteria = where("actors").is(actor);
-//            } else {
-//                criteria = criteria.orOperator(where("actors").is(actor));
-//            }
-//        }
-
+        Criteria criteria = new Criteria().orOperator(where("studio").is(studio), where("actors").is(actor), where("title").is(title));
         return operations.find(query(criteria), Film.class);
     }
 

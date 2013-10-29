@@ -1,7 +1,6 @@
 package com.tsupryk.api;
 
 import com.tsupryk.api.entity.Film;
-import org.springframework.data.repository.Repository;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * User: Vitaliy
  * Date: 27.10.13
  */
-public interface IFilmRepository extends Repository<Film, String> {
+public interface IFilmRepository {
 
     public Film findByTitle(String title);
 
