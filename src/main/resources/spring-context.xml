@@ -3,10 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:axon="http://www.axonframework.org/schema/core"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+      http://www.axonframework.org/schema/core http://www.axonframework.org/schema/axon-core-2.0.xsd">
 
     <mvc:annotation-driven />
 
@@ -32,6 +33,21 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
+    </bean>
+
+    <axon:annotation-config/>
+
+    <axon:command-bus id="commandBus"/>
+    <axon:event-bus id="eventBus"/>
+
+    <axon:filesystem-event-store id="eventStore" base-dir="events"/>
+
+    <axon:event-sourcing-repository id="userRepository" aggregate-type="com.tsupryk.axon.aggregates.UserAR"/>
+
+
+
+    <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
+        <property name="commandBus" ref="commandBus"/>
     </bean>
 
 </beans>

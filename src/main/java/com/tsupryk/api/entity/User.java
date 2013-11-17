@@ -1,5 +1,7 @@
 package com.tsupryk.api.entity;
 
+import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
+
 import javax.persistence.*;
 import java.util.Set;
 
