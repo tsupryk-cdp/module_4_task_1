@@ -18,6 +18,10 @@ public class CreateUserCommand {
 
     private String lastName;
 
+    public CreateUserCommand() {
+
+    }
+
     public CreateUserCommand(String userId, String firstName, String lastName) {
         this.userId = userId;
         this.firstName = firstName;

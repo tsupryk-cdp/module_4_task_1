@@ -42,7 +42,7 @@
 
     <axon:filesystem-event-store id="eventStore" base-dir="events"/>
 
-    <axon:event-sourcing-repository id="userRepository" aggregate-type="com.tsupryk.axon.aggregates.UserAR"/>
+    <axon:event-sourcing-repository id="axonUserRepository" aggregate-type="com.tsupryk.axon.aggregates.UserAR"/>
 
 
 

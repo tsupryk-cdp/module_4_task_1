@@ -24,6 +24,7 @@ public class UserAR extends AbstractAnnotatedAggregateRoot {
 
     @CommandHandler
     public UserAR(CreateUserCommand command) {
+
         apply(new UserCreatedEvent(command.getUserId(), command.getFirstName(), command.getLastName()));
     }
 
