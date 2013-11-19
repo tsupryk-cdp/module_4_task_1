@@ -25,7 +25,7 @@ import java.util.List;
 @Repository
 public class FilmRepository implements IFilmRepository {
 
-    @Autowired
+//    @Autowired
     private MongoOperations operations;
 
     @Override

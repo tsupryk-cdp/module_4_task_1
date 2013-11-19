@@ -40,9 +40,29 @@
     <axon:command-bus id="commandBus"/>
     <axon:event-bus id="eventBus"/>
 
-    <axon:filesystem-event-store id="eventStore" base-dir="events"/>
+    <!--<axon:filesystem-event-store id="eventStore" base-dir="events"/>-->
 
     <axon:event-sourcing-repository id="axonUserRepository" aggregate-type="com.tsupryk.axon.aggregates.UserAR"/>
+
+    <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongoDbFactory" factory-method="createMongo" />
+
+    <bean id="mongoDbFactory" class="org.axonframework.eventstore.mongo.MongoFactory" >
+        <property name="mongoAddresses">
+            <list>
+                <bean class="com.mongodb.ServerAddress" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="mongoTemplate" class="org.axonframework.eventstore.mongo.DefaultMongoTemplate">
+        <constructor-arg name="mongo" ref="mongo" />
+    </bean>
+
+
+    <bean id="eventStore" class="org.axonframework.eventstore.mongo.MongoEventStore">
+        <constructor-arg name="mongo" ref="mongoTemplate"/>
+    </bean>
+
 
 
 

@@ -1,9 +1,7 @@
 package com.tsupryk.axon.handler;
 
-import com.tsupryk.api.IUserRepository;
 import com.tsupryk.axon.aggregates.UserAR;
 import com.tsupryk.axon.commands.CreateUserCommand;
-import com.tsupryk.axon.events.UserCreatedEvent;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,7 @@ public class UserCommandHandler {
 
 
     @CommandHandler
-    public void handle(CreateUserCommand command) {
+    public void handleCreateUser(CreateUserCommand command) {
         UserAR user = new UserAR(command);
         repository.add(user);
     }

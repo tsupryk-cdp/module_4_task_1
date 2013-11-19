@@ -47,13 +47,13 @@
     </bean>
 
 
-    <mongo:mongo host="localhost" port="27017" />
+    <!--<mongo:mongo host="localhost" port="27017" />-->
 
-    <mongo:db-factory id="mongoDbFactory" dbname="database" mongo-ref="mongo"/>
+    <!--<mongo:db-factory id="mongoDbFactory" dbname="database" mongo-ref="mongo"/>-->
 
 
-    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
-    </bean>
+    <!--<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">-->
+        <!--<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>-->
+    <!--</bean>-->
 
 </beans>
