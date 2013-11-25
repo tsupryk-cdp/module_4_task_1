@@ -1,82 +1,84 @@
-package com.tsupryk.repository;
+package com.tsupryk.axon.commands;
 
 import com.tsupryk.api.entity.TicketCategory;
 import com.tsupryk.api.entity.TicketStatus;
-import com.tsupryk.api.IFiltrable;
+import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 
 import java.util.Date;
 
 /**
- * The class TicketFilter.
+ * The class CreateTicketCommand.
  * <p/>
- * User: Vitaliy
- * Date: 06.10.13
+ * Date: 17.11.13
+ * <p/>
+ * Author: Vitaliy
  */
-public class TicketFilter implements IFiltrable {
+public class CreateTicketCommand {
+
+    @TargetAggregateIdentifier
+    private Integer ticketId;
 
     private String filmName;
+
     private Date filmStartDate;
+
     private TicketCategory category;
+
+    private Integer placeNumber;
+
     private TicketStatus status;
 
-    private Integer userId;
 
-    public TicketFilter(String filmName, Date filmStartDate, TicketCategory category, TicketStatus status,
-                        Integer userId) {
-        this.filmName = filmName;
-        this.filmStartDate = filmStartDate;
-        this.category = category;
-        this.status = status;
-        this.userId = userId;
+    public CreateTicketCommand() {
+
     }
 
-    @Override
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
+
     public String getFilmName() {
         return filmName;
     }
 
-    @Override
     public void setFilmName(String filmName) {
         this.filmName = filmName;
     }
 
-    @Override
     public Date getFilmStartDate() {
         return filmStartDate;
     }
 
-    @Override
     public void setFilmStartDate(Date filmStartDate) {
         this.filmStartDate = filmStartDate;
     }
 
-    @Override
     public TicketCategory getCategory() {
         return category;
     }
 
-    @Override
     public void setCategory(TicketCategory category) {
         this.category = category;
     }
 
-    @Override
-    public Integer getUserId() {
-        return userId;
+    public Integer getPlaceNumber() {
+        return placeNumber;
     }
 
-    @Override
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setPlaceNumber(Integer placeNumber) {
+        this.placeNumber = placeNumber;
     }
 
-    @Override
     public TicketStatus getStatus() {
         return status;
     }
 
-    @Override
     public void setStatus(TicketStatus status) {
         this.status = status;
     }
+
 }

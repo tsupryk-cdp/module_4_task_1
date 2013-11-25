@@ -1,19 +1,27 @@
-package com.tsupryk.api.entity;
+package com.tsupryk.axon.aggregates;
 
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.axon.commands.BookTicketCommand;
+import com.tsupryk.axon.commands.CreateTicketCommand;
+import com.tsupryk.axon.events.TicketBookedEvent;
 import com.tsupryk.axon.events.TicketCreatedEvent;
-import org.springframework.data.annotation.Id;
+import org.axonframework.eventhandling.annotation.EventHandler;
+import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
+import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 
 import java.util.Date;
 
 /**
- * The class Ticket.
+ * The class TicketAR.
  * <p/>
- * User: Vitaliy
- * Date: 06.10.13
+ * Date: 17.11.13
+ * <p/>
+ * Author: Vitaliy
  */
-public class Ticket {
+public class TicketAR extends AbstractAnnotatedAggregateRoot {
 
-    @Id
+    @AggregateIdentifier
     private Integer id;
 
     private String filmName;
@@ -28,17 +36,44 @@ public class Ticket {
 
     private Integer userId;
 
-    public Ticket() {
+    public TicketAR() {
 
     }
 
-    public Ticket(TicketCreatedEvent event) {
+    public TicketAR(CreateTicketCommand command) {
+        id = command.getTicketId();
+        filmName = command.getFilmName();
+        filmStartDate = command.getFilmStartDate();
+        category = command.getCategory();
+        placeNumber = command.getPlaceNumber();
+        status = command.getStatus();
+        TicketCreatedEvent event = new TicketCreatedEvent(command);
+        apply(event);
+    }
+
+    public void book(BookTicketCommand command) {
+        id = command.getTicketId();
+        userId = command.getUserId();
+        TicketBookedEvent event = new TicketBookedEvent();
+        event.setTicketId(id);
+        event.setUserId(userId);
+        apply(event);
+    }
+
+    @EventHandler
+    public void on(TicketCreatedEvent event) {
         id = event.getTicketId();
         filmName = event.getFilmName();
         filmStartDate = event.getFilmStartDate();
         category = event.getCategory();
         placeNumber = event.getPlaceNumber();
         status = event.getStatus();
+    }
+
+    @EventHandler
+    public void on(TicketBookedEvent event) {
+        id = event.getTicketId();
+        userId = event.getUserId();
     }
 
     public Integer getId() {

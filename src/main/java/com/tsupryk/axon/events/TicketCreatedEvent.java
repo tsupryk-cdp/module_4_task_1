@@ -1,20 +1,21 @@
-package com.tsupryk.api.entity;
+package com.tsupryk.axon.events;
 
-import com.tsupryk.axon.events.TicketCreatedEvent;
-import org.springframework.data.annotation.Id;
+import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.axon.commands.CreateTicketCommand;
 
 import java.util.Date;
 
 /**
- * The class Ticket.
+ * The class TicketCreatedEvent.
  * <p/>
- * User: Vitaliy
- * Date: 06.10.13
+ * Date: 23.11.13
+ * <p/>
+ * Author: Vitaliy
  */
-public class Ticket {
+public class TicketCreatedEvent {
 
-    @Id
-    private Integer id;
+    private Integer ticketId;
 
     private String filmName;
 
@@ -26,27 +27,25 @@ public class Ticket {
 
     private TicketStatus status;
 
-    private Integer userId;
-
-    public Ticket() {
+    public TicketCreatedEvent() {
 
     }
 
-    public Ticket(TicketCreatedEvent event) {
-        id = event.getTicketId();
-        filmName = event.getFilmName();
-        filmStartDate = event.getFilmStartDate();
-        category = event.getCategory();
-        placeNumber = event.getPlaceNumber();
-        status = event.getStatus();
+    public TicketCreatedEvent(CreateTicketCommand command) {
+        ticketId = command.getTicketId();
+        filmName = command.getFilmName();
+        filmStartDate = command.getFilmStartDate();
+        category = command.getCategory();
+        placeNumber = command.getPlaceNumber();
+        status = command.getStatus();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getTicketId() {
+        return ticketId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
     }
 
     public String getFilmName() {
@@ -89,11 +88,4 @@ public class Ticket {
         this.status = status;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 }

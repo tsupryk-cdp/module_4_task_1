@@ -13,18 +13,13 @@
 
 
     <context:annotation-config />
-    <context:component-scan base-package="com.tsupryk"/>
+    <context:component-scan base-package="com.tsupryk.axon"/>
     <context:property-placeholder location="classpath:app.properties" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
     <import resource="db-config.xml" />
 
-
-    <!--<bean class="org.springframework.web.servlet.view.XmlViewResolver">-->
-        <!--<property name="location" value="classpath:jasper-views.xml"/>-->
-        <!--<property name="order" value="0"/>-->
-    <!--</bean>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
@@ -40,9 +35,7 @@
     <axon:command-bus id="commandBus"/>
     <axon:event-bus id="eventBus"/>
 
-    <!--<axon:filesystem-event-store id="eventStore" base-dir="events"/>-->
-
-    <axon:event-sourcing-repository id="axonUserRepository" aggregate-type="com.tsupryk.axon.aggregates.UserAR"/>
+    <axon:event-sourcing-repository id="axonUserRepository" aggregate-type="com.tsupryk.axon.aggregates.TicketAR"/>
 
     <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongoDbFactory" factory-method="createMongo" />
 
@@ -58,13 +51,9 @@
         <constructor-arg name="mongo" ref="mongo" />
     </bean>
 
-
     <bean id="eventStore" class="org.axonframework.eventstore.mongo.MongoEventStore">
         <constructor-arg name="mongo" ref="mongoTemplate"/>
     </bean>
-
-
-
 
     <bean class="org.axonframework.commandhandling.gateway.CommandGatewayFactoryBean">
         <property name="commandBus" ref="commandBus"/>
