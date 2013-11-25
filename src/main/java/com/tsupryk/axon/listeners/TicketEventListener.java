@@ -4,6 +4,7 @@ import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.api.entity.TicketStatus;
 import com.tsupryk.axon.events.TicketBookedEvent;
 import com.tsupryk.axon.events.TicketCreatedEvent;
+import com.tsupryk.axon.service.TicketService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class TicketEventListener {
 
-    public static final String COLLECTION_TICKETS = "tickets";
 
     @Autowired
     private MongoOperations mongoOperations;
@@ -32,13 +32,13 @@ public class TicketEventListener {
     @EventHandler
     public void handleTicketCreated(TicketCreatedEvent event) {
         Ticket ticket = new Ticket(event);
-        mongoOperations.save(ticket, COLLECTION_TICKETS);
+        mongoOperations.save(ticket, TicketService.TICKETS_COLLECTION);
     }
 
     @EventHandler
     public void handleTicketBooked(TicketBookedEvent event) {
         mongoOperations.updateFirst(query(where("_id").is(event.getTicketId())),
-                new Update().set("userId", event.getUserId()).set("status", TicketStatus.BOOKED), COLLECTION_TICKETS);
+                new Update().set("userId", event.getUserId()).set("status", TicketStatus.BOOKED), TicketService.TICKETS_COLLECTION);
 
     }
 }

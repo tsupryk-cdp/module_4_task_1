@@ -23,13 +23,13 @@ public class TicketCommandHandler {
 
 
     @CommandHandler
-    public void handleCreateUser(CreateTicketCommand command) {
+    public void handleCreateTicket(CreateTicketCommand command) {
         TicketAR ticket = new TicketAR(command);
         repository.add(ticket);
     }
 
     @CommandHandler
-    public void handleChangePassword(BookTicketCommand command) {
+    public void handleBookTicket(BookTicketCommand command) {
         TicketAR ticket = repository.load(command.getTicketId());
         ticket.book(command);
     }

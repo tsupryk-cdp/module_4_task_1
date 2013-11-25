@@ -80,4 +80,13 @@ public class TicketController {
         List<Ticket> tickets = service.getFreeTickets();
         return new RestResponse(SUCCESS, tickets);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/init.json", produces = "application/json", method = RequestMethod.GET)
+    public Object init() {
+        service.init();
+        return new RestResponse(SUCCESS, null);
+    }
+
+
 }
