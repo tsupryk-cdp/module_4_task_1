@@ -1,6 +1,7 @@
 package com.tsupryk.api;
 
 import com.tsupryk.api.entity.User;
+import com.tsupryk.axon.aggregates.UserAR;
 
 import java.util.List;
 
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public interface IUserRepository {
 
-    User getById(Integer id);
+//    User getById(Integer id);
 
     void insert(User user);
 
     void init();
 
     List<User> getAllUsers();
+
+    UserAR getById(String id);
 }

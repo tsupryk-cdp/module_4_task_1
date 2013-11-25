@@ -41,7 +41,8 @@ public class TicketService implements ITicketService {
     @Override
     public boolean bookTickets(Integer userId, List<Ticket> ticketList) {
         List<Ticket> storedTickets = new ArrayList<>();
-        User user = userRepository.getById(userId);
+//        User user = userRepository.getById(userId);
+        User user = new User();
         if (user == null) {
             throw new ServiceRuntimeException("The user with id = " + userId + " doesn't exist.");
         }
@@ -69,7 +70,8 @@ public class TicketService implements ITicketService {
     @Override
     public List<Ticket> getBookedTickets(Integer userId, String filmName, Date filmStartDate,
                                          TicketCategory ticketCategory) {
-        if (userRepository.getById(userId) == null) {
+//        if (userRepository.getById(userId) == null) {
+        if (userRepository.getById(userId.toString()) == null) {
             throw new ServiceRuntimeException("There is no user with id = " + userId);
         }
         IFiltrable filter = FilterBuilder.buildBookedTicketsFilter(userId, filmName, filmStartDate, ticketCategory);

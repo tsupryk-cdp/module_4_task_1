@@ -5,10 +5,14 @@ import com.tsupryk.api.RestResponse;
 import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.entity.User;
 import com.tsupryk.axon.aggregates.UserAR;
+import com.tsupryk.axon.commands.ChangePasswordCommand;
+import com.tsupryk.axon.commands.Command;
 import com.tsupryk.axon.commands.CreateUserCommand;
+import com.tsupryk.axon.listeners.UserEventListener;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,24 +42,34 @@ public class UserController {
     @Autowired
     private EventSourcingRepository<UserAR> repository;
 
+    @Autowired
+    private MongoOperations mongoOperations;
+
 
     @ResponseBody
     @RequestMapping(value = "/create.json", produces = "application/json", method = RequestMethod.POST)
     public Object createUser(@RequestBody CreateUserCommand command) {
 
-        String id = UUID.randomUUID().toString();
-        command.setUserId(id);
+//        String id = UUID.randomUUID().toString();
+//        command.setUserId(id);
 
         commandGateway.send(command);
 
-        RestResponse response = new RestResponse(SUCCESS, id);
+        RestResponse response = new RestResponse(SUCCESS, null);
 
         return response;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getById.json", produces = "application/json", method = RequestMethod.GET)
-    public Object getAllUsers(@RequestParam String id) {
-        return new RestResponse(SUCCESS, repository.load(id));
+    public Object getUserById(@RequestParam String id) {
+        return new RestResponse(SUCCESS, mongoOperations.findById(id, UserAR.class, UserEventListener.COLLECTION_USERS));
+    }
+
+    @ResponseBody
+        @RequestMapping(value = "/changePassword", produces = "application/json", method = RequestMethod.POST)
+    public Object changePassword(@RequestBody ChangePasswordCommand command) {
+        commandGateway.send(command);
+        return new RestResponse(SUCCESS, null);
     }
 }

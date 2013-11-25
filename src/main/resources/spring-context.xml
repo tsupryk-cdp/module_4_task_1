@@ -21,10 +21,10 @@
     <import resource="db-config.xml" />
 
 
-    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
-        <property name="location" value="classpath:jasper-views.xml"/>
-        <property name="order" value="0"/>
-    </bean>
+    <!--<bean class="org.springframework.web.servlet.view.XmlViewResolver">-->
+        <!--<property name="location" value="classpath:jasper-views.xml"/>-->
+        <!--<property name="order" value="0"/>-->
+    <!--</bean>-->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">

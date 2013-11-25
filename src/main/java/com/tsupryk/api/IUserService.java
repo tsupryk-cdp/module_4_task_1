@@ -1,6 +1,7 @@
 package com.tsupryk.api;
 
 import com.tsupryk.api.entity.User;
+import com.tsupryk.axon.aggregates.UserAR;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface IUserService {
 
     void createUser(User user);
 
-    User getUserById(Integer id);
+    UserAR getUserById(String id);
 
     void init();
 

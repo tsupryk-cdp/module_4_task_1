@@ -2,9 +2,11 @@ package com.tsupryk.repository;
 
 import com.tsupryk.api.IUserRepository;
 import com.tsupryk.api.entity.User;
+import com.tsupryk.axon.aggregates.UserAR;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,11 +27,12 @@ public class UserRepository implements IUserRepository {
     @Autowired
     private SessionFactory factory;
 
+    @Autowired
+    private MongoOperations operations;
+
     @Override
-    public User getById(Integer id) {
-        return (User) getSession().createQuery(SELECT_BY_ID)
-                            .setParameter(ID, id)
-                            .uniqueResult();
+    public UserAR getById(String id) {
+        return operations.findById(id, UserAR.class);
     }
 
     @Override

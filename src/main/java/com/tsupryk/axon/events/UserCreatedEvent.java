@@ -15,10 +15,13 @@ public class UserCreatedEvent {
 
     private String lastName;
 
-    public UserCreatedEvent(String userId, String firstName, String lastName) {
+    private String password;
+
+    public UserCreatedEvent(String userId, String firstName, String lastName, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
     }
 
     public String getUserId() {
@@ -33,4 +36,7 @@ public class UserCreatedEvent {
         return lastName;
     }
 
+    public String getPassword() {
+        return password;
+    }
 }

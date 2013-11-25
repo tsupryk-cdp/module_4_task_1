@@ -1,6 +1,7 @@
 package com.tsupryk.axon.handler;
 
 import com.tsupryk.axon.aggregates.UserAR;
+import com.tsupryk.axon.commands.ChangePasswordCommand;
 import com.tsupryk.axon.commands.CreateUserCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingRepository;
@@ -28,5 +29,12 @@ public class UserCommandHandler {
     public void handleCreateUser(CreateUserCommand command) {
         UserAR user = new UserAR(command);
         repository.add(user);
+    }
+
+    @CommandHandler
+    public void handleChangePassword(ChangePasswordCommand command) {
+        UserAR user = repository.load(command.getUserId());
+        user.changePassword(command.getNewPassword());
+        //repository.add(user);
     }
 }

@@ -4,6 +4,7 @@ import com.tsupryk.api.IUserRepository;
 import com.tsupryk.api.IUserService;
 import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.api.entity.User;
+import com.tsupryk.axon.aggregates.UserAR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserById(Integer id) {
+    public UserAR getUserById(String id) {
         return repository.getById(id);
     }
 

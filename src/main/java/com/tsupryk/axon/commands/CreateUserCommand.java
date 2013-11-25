@@ -9,7 +9,7 @@ import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
  * <p/>
  * Author: Vitaliy
  */
-public class CreateUserCommand {
+public class CreateUserCommand implements Command {
 
     @TargetAggregateIdentifier
     private String userId;
@@ -18,14 +18,17 @@ public class CreateUserCommand {
 
     private String lastName;
 
+    private String password;
+
     public CreateUserCommand() {
 
     }
 
-    public CreateUserCommand(String userId, String firstName, String lastName) {
+    public CreateUserCommand(String userId, String firstName, String lastName, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password;
     }
 
     public String getUserId() {
@@ -43,4 +46,9 @@ public class CreateUserCommand {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
 }
