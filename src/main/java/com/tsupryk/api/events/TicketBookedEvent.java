@@ -1,4 +1,4 @@
-package com.tsupryk.axon.events;
+package com.tsupryk.api.events;
 
 
 /**
@@ -10,27 +10,27 @@ package com.tsupryk.axon.events;
  */
 public class TicketBookedEvent {
 
-    private Integer userId;
+    private String userId;
 
-    private Integer ticketId;
+    private String ticketId;
 
     public TicketBookedEvent() {
 
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public Integer getTicketId() {
+    public String getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Integer ticketId) {
+    public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }
 }

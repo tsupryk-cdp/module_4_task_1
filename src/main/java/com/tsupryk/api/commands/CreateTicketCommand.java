@@ -1,4 +1,4 @@
-package com.tsupryk.axon.commands;
+package com.tsupryk.api.commands;
 
 import com.tsupryk.api.entity.TicketCategory;
 import com.tsupryk.api.entity.TicketStatus;
@@ -16,11 +16,9 @@ import java.util.Date;
 public class CreateTicketCommand {
 
     @TargetAggregateIdentifier
-    private Integer ticketId;
+    private String ticketId;
 
-    private String filmName;
-
-    private Date filmStartDate;
+    private String filmId;
 
     private TicketCategory category;
 
@@ -33,28 +31,29 @@ public class CreateTicketCommand {
 
     }
 
-    public Integer getTicketId() {
+    public CreateTicketCommand(String ticketId, String filmId, TicketCategory category, Integer placeNumber,
+                               TicketStatus status) {
+        this.ticketId = ticketId;
+        this.filmId = filmId;
+        this.category = category;
+        this.placeNumber = placeNumber;
+        this.status = status;
+    }
+
+    public String getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Integer ticketId) {
+    public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }
 
-    public String getFilmName() {
-        return filmName;
+    public String getFilmId() {
+        return filmId;
     }
 
-    public void setFilmName(String filmName) {
-        this.filmName = filmName;
-    }
-
-    public Date getFilmStartDate() {
-        return filmStartDate;
-    }
-
-    public void setFilmStartDate(Date filmStartDate) {
-        this.filmStartDate = filmStartDate;
+    public void setFilmId(String filmId) {
+        this.filmId = filmId;
     }
 
     public TicketCategory getCategory() {

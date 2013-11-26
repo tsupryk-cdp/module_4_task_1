@@ -38,6 +38,10 @@ public class TicketService {
         return repository.find(query(where("status").is(TicketStatus.BOOKED).and("userId").is(userId)), Ticket.class);
     }
 
+    public Ticket getById(String id) {
+        return repository.findById(id, Ticket.class, TICKETS_COLLECTION);
+    }
+
     public void init() {
         int count = 0;
         for (int j = 0; j < 2; j++) {

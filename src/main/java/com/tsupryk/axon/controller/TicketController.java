@@ -1,17 +1,12 @@
 package com.tsupryk.axon.controller;
 
 import com.tsupryk.api.RestResponse;
+import com.tsupryk.api.commands.*;
 import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.axon.aggregates.TicketAR;
-import com.tsupryk.axon.commands.BookTicketCommand;
-import com.tsupryk.axon.commands.CreateTicketCommand;
-import com.tsupryk.axon.listeners.TicketEventListener;
 import com.tsupryk.axon.service.TicketService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,26 +36,34 @@ public class TicketController {
     private TicketService service;
 
     @ResponseBody
-    @RequestMapping(value = "/createTicket.json", produces = "application/json", method = RequestMethod.POST)
-    public Object createTicket(@RequestBody CreateTicketCommand command) {
-
-//        String id = UUID.randomUUID().toString();
-//        command.setUserId(id);
-
+    @RequestMapping(value = "/createFilm.json", produces = "application/json", method = RequestMethod.POST)
+    public Object createFilm(@RequestBody CreateFilmCommand command) {
         commandGateway.send(command);
-
         RestResponse response = new RestResponse(SUCCESS, null);
-
         return response;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/book.json", produces = "application/json", method = RequestMethod.PUT)
-    public Object bookTicket(@RequestBody BookTicketCommand command) {
+    @RequestMapping(value = "/generateFilmTickets.json", produces = "application/json", method = RequestMethod.POST)
+    public Object generateFilmTickets(@RequestBody GenerateFilmTicketsCommand command) {
         commandGateway.send(command);
-
         RestResponse response = new RestResponse(SUCCESS, null);
+        return response;
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/createUser.json", produces = "application/json", method = RequestMethod.POST)
+    public Object createUser(@RequestBody CreateUserCommand command) {
+        commandGateway.send(command);
+        RestResponse response = new RestResponse(SUCCESS, null);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/bookUserTickets.json", produces = "application/json", method = RequestMethod.PUT)
+    public Object bookUserTickets(@RequestBody BookUserTicketsCommand command) {
+        commandGateway.send(command);
+        RestResponse response = new RestResponse(SUCCESS, null);
         return response;
     }
 
@@ -80,13 +83,5 @@ public class TicketController {
         List<Ticket> tickets = service.getFreeTickets();
         return new RestResponse(SUCCESS, tickets);
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/init.json", produces = "application/json", method = RequestMethod.GET)
-    public Object init() {
-        service.init();
-        return new RestResponse(SUCCESS, null);
-    }
-
 
 }

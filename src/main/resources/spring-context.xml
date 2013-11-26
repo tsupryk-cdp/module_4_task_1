@@ -35,7 +35,9 @@
     <axon:command-bus id="commandBus"/>
     <axon:event-bus id="eventBus"/>
 
-    <axon:event-sourcing-repository id="axonUserRepository" aggregate-type="com.tsupryk.axon.aggregates.TicketAR"/>
+    <axon:event-sourcing-repository id="ticketES" aggregate-type="com.tsupryk.api.aggregate.TicketAR"/>
+    <axon:event-sourcing-repository id="filmES" aggregate-type="com.tsupryk.api.aggregate.FilmAR"/>
+    <axon:event-sourcing-repository id="userES" aggregate-type="com.tsupryk.api.aggregate.UserAR"/>
 
     <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongoDbFactory" factory-method="createMongo" />
 

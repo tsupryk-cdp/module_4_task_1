@@ -1,6 +1,6 @@
 package com.tsupryk.api.entity;
 
-import com.tsupryk.axon.events.TicketCreatedEvent;
+import com.tsupryk.api.events.TicketCreatedEvent;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -33,12 +33,6 @@ public class Ticket {
     }
 
     public Ticket(TicketCreatedEvent event) {
-        id = event.getTicketId();
-        filmName = event.getFilmName();
-        filmStartDate = event.getFilmStartDate();
-        category = event.getCategory();
-        placeNumber = event.getPlaceNumber();
-        status = event.getStatus();
     }
 
     public Integer getId() {

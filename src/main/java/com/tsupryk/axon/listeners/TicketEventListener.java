@@ -2,8 +2,8 @@ package com.tsupryk.axon.listeners;
 
 import com.tsupryk.api.entity.Ticket;
 import com.tsupryk.api.entity.TicketStatus;
-import com.tsupryk.axon.events.TicketBookedEvent;
-import com.tsupryk.axon.events.TicketCreatedEvent;
+import com.tsupryk.api.events.TicketBookedEvent;
+import com.tsupryk.api.events.TicketCreatedEvent;
 import com.tsupryk.axon.service.TicketService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
