@@ -1,9 +1,11 @@
 package com.tsupryk.domain.listeners;
 
+import com.tsupryk.api.events.TicketsBookedEvent;
+import com.tsupryk.api.events.SeanceTicketsCreatedEvent;
+import com.tsupryk.domain.entity.Film;
 import com.tsupryk.domain.entity.Ticket;
 import com.tsupryk.api.TicketStatus;
-import com.tsupryk.api.events.TicketBookedEvent;
-import com.tsupryk.api.events.TicketCreatedEvent;
+import com.tsupryk.domain.service.FilmService;
 import com.tsupryk.domain.service.TicketService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +32,22 @@ public class TicketEventListener {
     private MongoOperations mongoOperations;
 
     @EventHandler
-    public void handleTicketCreated(TicketCreatedEvent event) {
-        Ticket ticket = new Ticket(event);
+    public void handleTicketsCreated(SeanceTicketsCreatedEvent event) {
+        Film film = mongoOperations.findById(event.getFilmId(), Film.class, FilmService.COLLECTION_FILMS);
+
+        Ticket ticket = new Ticket();
+        ticket.setCategory(event.getCategory());
+        ticket.setFilmName(film.getTitle());
+        ticket.setFilmStartDate(film.getStartTime());
+        ticket.setPlaceNumber(event.getPlaceNumber());
+        ticket.setStatus(TicketStatus.FREE);
+
         mongoOperations.save(ticket, TicketService.TICKETS_COLLECTION);
     }
 
     @EventHandler
-    public void handleTicketBooked(TicketBookedEvent event) {
-        mongoOperations.updateFirst(query(where("_id").is(event.getTicketId())),
+    public void handleTicketsBooked(TicketsBookedEvent event) {
+        mongoOperations.updateMulti(query(where("id").in(event.getTicketIds())),
                 new Update().set("userId", event.getUserId()).set("status", TicketStatus.BOOKED), TicketService.TICKETS_COLLECTION);
-
     }
 }

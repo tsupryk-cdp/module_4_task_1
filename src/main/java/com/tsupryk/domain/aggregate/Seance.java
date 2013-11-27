@@ -1,19 +1,16 @@
 package com.tsupryk.domain.aggregate;
 
-import com.tsupryk.api.User;
-import com.tsupryk.api.commands.CreateTicketCommand;
-import com.tsupryk.domain.entity.Film;
-import com.tsupryk.domain.entity.Ticket;
-import com.tsupryk.domain.entity.TicketCategory;
-import com.tsupryk.api.TicketStatus;
-import com.tsupryk.api.commands.BookTicketCommand;
-import com.tsupryk.api.events.TicketBookedEvent;
-import com.tsupryk.api.events.TicketCreatedEvent;
+import com.tsupryk.api.commands.BookUserTicketsCommand;
+import com.tsupryk.api.commands.CreateSeanceTicketsCommand;
+import com.tsupryk.api.events.SeanceTicketsCreatedEvent;
+import com.tsupryk.api.events.TicketsBookedEvent;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The class Seance.
@@ -27,55 +24,47 @@ public class Seance extends AbstractAnnotatedAggregateRoot<String> {
     @AggregateIdentifier
     private String id;
 
-    private Film film;
-
-    private List<Ticket> tickets;
-
-    private List<User> users;
-
     private String filmId;
 
-    private TicketCategory category;
+    private List<String> ticketIds;
 
-    private Integer placeNumber;
+    private Map<String, List<String>> userIds = new HashMap<>();
 
-    private TicketStatus status;
-
-    private String userId;
+    private Integer placeCount;
 
     public Seance() {
 
     }
 
-    public Seance(CreateTicketCommand command) {
-        TicketCreatedEvent event = new TicketCreatedEvent(command.getTicketId(), command.getFilmId(),
-                command.getCategory(), command.getPlaceNumber());
+    public Seance(CreateSeanceTicketsCommand command) {
+//        id = command.getSeanceId();
+//        ticketIds = command.getTicketIds();
+//        placeCount = command.getPlaceCount();
+//        filmId = command.getFilmId();
+
+        SeanceTicketsCreatedEvent event = new SeanceTicketsCreatedEvent(command.getSeanceId(), command.getTicketIds(),
+                command.getFilmId(), command.getTicketsCategory(), command.getPlaceCount());
         apply(event);
     }
 
-    public void book(BookTicketCommand command) {
-        id = command.getTicketId();
-        userId = command.getUserId();
-        TicketBookedEvent event = new TicketBookedEvent();
-        event.setTicketId(id);
-        event.setUserId(userId);
+    public void book(BookUserTicketsCommand command) {
+//        userIds.put(command.getUserId(), command.getTicketIds());
+
+        TicketsBookedEvent event = new TicketsBookedEvent(id, command.getUserId(), command.getTicketIds());
         apply(event);
     }
 
     @EventHandler
-    public void on(TicketCreatedEvent event) {
-        id = event.getTicketId();
+    public void on(SeanceTicketsCreatedEvent event) {
+        id = event.getSeanceId();
         filmId = event.getFilmId();
-        category = event.getCategory();
-        placeNumber = event.getPlaceNumber();
-        status = TicketStatus.FREE;
+        ticketIds.addAll(event.getTicketIds());
+        placeCount = event.getPlaceNumber();
     }
 
     @EventHandler
-    public void on(TicketBookedEvent event) {
-        id = event.getTicketId();
-        userId = event.getUserId();
-        status = TicketStatus.BOOKED;
+    public void on(TicketsBookedEvent event) {
+        userIds.put(event.getUserId(), event.getTicketIds());
     }
 
 }

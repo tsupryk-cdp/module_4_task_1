@@ -2,16 +2,20 @@ package com.tsupryk.api.events;
 
 import com.tsupryk.domain.entity.TicketCategory;
 
+import java.util.List;
+
 /**
- * The class TicketCreatedEvent.
+ * The class SeanceTicketsCreatedEvent.
  * <p/>
  * Date: 23.11.13
  * <p/>
  * Author: Vitaliy
  */
-public class TicketCreatedEvent {
+public class SeanceTicketsCreatedEvent {
 
-    private String ticketId;
+    private String seanceId;
+
+    private List<String> ticketIds;
 
     private String filmId;
 
@@ -19,23 +23,32 @@ public class TicketCreatedEvent {
 
     private Integer placeNumber;
 
-    public TicketCreatedEvent() {
+    public SeanceTicketsCreatedEvent() {
 
     }
 
-    public TicketCreatedEvent(String ticketId, String filmId, TicketCategory category, Integer placeNumber) {
-        this.ticketId = ticketId;
+    public SeanceTicketsCreatedEvent(String seanceId, List<String> ticketIds, String filmId, TicketCategory category, Integer placeNumber) {
+        this.seanceId = seanceId;
+        this.ticketIds = ticketIds;
         this.filmId = filmId;
         this.category = category;
         this.placeNumber = placeNumber;
     }
 
-    public String getTicketId() {
-        return ticketId;
+    public String getSeanceId() {
+        return seanceId;
     }
 
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
+    public void setSeanceId(String seanceId) {
+        this.seanceId = seanceId;
+    }
+
+    public List<String> getTicketIds() {
+        return ticketIds;
+    }
+
+    public void setTicketIds(List<String> ticketIds) {
+        this.ticketIds = ticketIds;
     }
 
     public TicketCategory getCategory() {

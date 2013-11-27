@@ -1,6 +1,8 @@
 package com.tsupryk.api.commands;
 
 
+import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
+
 /**
  * The class CreateFilmCommand.
  * <p/>
@@ -10,6 +12,7 @@ package com.tsupryk.api.commands;
  */
 public class CreateFilmCommand {
 
+    @TargetAggregateIdentifier
     private String filmId;
 
     private String title;

@@ -1,27 +1,31 @@
-package com.tsupryk.api.commands;
+package com.tsupryk.api.events;
 
-import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 
 import java.util.List;
 
 /**
- * The class BookUserTicketsCommand.
+ * The class TicketsBookedEvent.
  * <p/>
- * Date: 26.11.13
+ * Date: 24.11.13
  * <p/>
  * Author: Vitaliy
  */
-public class BookUserTicketsCommand {
+public class TicketsBookedEvent {
 
-    @TargetAggregateIdentifier
     private String seanceId;
 
     private String userId;
 
     private List<String> ticketIds;
 
-    public BookUserTicketsCommand() {
+    public TicketsBookedEvent() {
 
+    }
+
+    public TicketsBookedEvent(String seanceId, String userId, List<String> ticketIds) {
+        this.seanceId = seanceId;
+        this.userId = userId;
+        this.ticketIds = ticketIds;
     }
 
     public String getUserId() {

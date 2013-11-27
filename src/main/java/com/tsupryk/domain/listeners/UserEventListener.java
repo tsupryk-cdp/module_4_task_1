@@ -1,6 +1,6 @@
 package com.tsupryk.domain.listeners;
 
-import com.tsupryk.api.User;
+import com.tsupryk.domain.entity.User;
 import com.tsupryk.api.events.UserCreatedEvent;
 import com.tsupryk.domain.service.UserService;
 import org.axonframework.eventhandling.annotation.EventHandler;
