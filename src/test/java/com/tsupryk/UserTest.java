@@ -1,8 +1,5 @@
 package com.tsupryk;
 
-import com.tsupryk.api.entity.User;
-import org.junit.Before;
-
 /**
  * The class UserTest.
  * <p/>

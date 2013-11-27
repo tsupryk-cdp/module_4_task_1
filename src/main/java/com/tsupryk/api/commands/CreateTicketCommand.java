@@ -1,10 +1,7 @@
 package com.tsupryk.api.commands;
 
-import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.domain.entity.TicketCategory;
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
-
-import java.util.Date;
 
 /**
  * The class CreateTicketCommand.
@@ -24,20 +21,16 @@ public class CreateTicketCommand {
 
     private Integer placeNumber;
 
-    private TicketStatus status;
-
 
     public CreateTicketCommand() {
 
     }
 
-    public CreateTicketCommand(String ticketId, String filmId, TicketCategory category, Integer placeNumber,
-                               TicketStatus status) {
+    public CreateTicketCommand(String ticketId, String filmId, TicketCategory category, Integer placeNumber) {
         this.ticketId = ticketId;
         this.filmId = filmId;
         this.category = category;
         this.placeNumber = placeNumber;
-        this.status = status;
     }
 
     public String getTicketId() {
@@ -72,12 +65,5 @@ public class CreateTicketCommand {
         this.placeNumber = placeNumber;
     }
 
-    public TicketStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TicketStatus status) {
-        this.status = status;
-    }
 
 }

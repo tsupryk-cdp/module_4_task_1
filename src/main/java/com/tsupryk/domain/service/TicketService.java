@@ -1,8 +1,8 @@
-package com.tsupryk.axon.service;
+package com.tsupryk.domain.service;
 
-import com.tsupryk.api.entity.Ticket;
-import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.domain.entity.Ticket;
+import com.tsupryk.domain.entity.TicketCategory;
+import com.tsupryk.api.TicketStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import static org.springframework.data.mongodb.core.query.Query.query;

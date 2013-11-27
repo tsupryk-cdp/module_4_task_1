@@ -1,6 +1,6 @@
-package com.tsupryk.axon.service;
+package com.tsupryk.domain.service;
 
-import com.tsupryk.api.entity.User;
+import com.tsupryk.api.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;

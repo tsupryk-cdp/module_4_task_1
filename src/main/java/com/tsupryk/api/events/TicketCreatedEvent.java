@@ -1,9 +1,6 @@
 package com.tsupryk.api.events;
 
-import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.api.entity.TicketStatus;
-
-import java.util.Date;
+import com.tsupryk.domain.entity.TicketCategory;
 
 /**
  * The class TicketCreatedEvent.

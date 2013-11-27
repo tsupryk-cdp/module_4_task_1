@@ -1,10 +1,10 @@
-package com.tsupryk.axon.listeners;
+package com.tsupryk.domain.listeners;
 
-import com.tsupryk.api.entity.Ticket;
-import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.domain.entity.Ticket;
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.api.events.TicketBookedEvent;
 import com.tsupryk.api.events.TicketCreatedEvent;
-import com.tsupryk.axon.service.TicketService;
+import com.tsupryk.domain.service.TicketService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

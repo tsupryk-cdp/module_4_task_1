@@ -1,12 +1,10 @@
-package com.tsupryk.api.aggregate;
+package com.tsupryk.domain.aggregate;
 
 import com.tsupryk.api.commands.CreateUserCommand;
 import com.tsupryk.api.events.UserCreatedEvent;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
-
-import java.util.List;
 
 /**
  * The class UserAR.

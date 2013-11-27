@@ -1,9 +1,11 @@
-package com.tsupryk.api.aggregate;
+package com.tsupryk.domain.aggregate;
 
+import com.tsupryk.api.User;
 import com.tsupryk.api.commands.CreateTicketCommand;
-import com.tsupryk.api.entity.Film;
-import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.api.entity.TicketStatus;
+import com.tsupryk.domain.entity.Film;
+import com.tsupryk.domain.entity.Ticket;
+import com.tsupryk.domain.entity.TicketCategory;
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.api.commands.BookTicketCommand;
 import com.tsupryk.api.events.TicketBookedEvent;
 import com.tsupryk.api.events.TicketCreatedEvent;
@@ -11,17 +13,25 @@ import org.axonframework.eventhandling.annotation.EventHandler;
 import org.axonframework.eventsourcing.annotation.AbstractAnnotatedAggregateRoot;
 import org.axonframework.eventsourcing.annotation.AggregateIdentifier;
 
+import java.util.List;
+
 /**
- * The class TicketAR.
+ * The class Seance.
  * <p/>
  * Date: 17.11.13
  * <p/>
  * Author: Vitaliy
  */
-public class TicketAR extends AbstractAnnotatedAggregateRoot<String> {
+public class Seance extends AbstractAnnotatedAggregateRoot<String> {
 
     @AggregateIdentifier
     private String id;
+
+    private Film film;
+
+    private List<Ticket> tickets;
+
+    private List<User> users;
 
     private String filmId;
 
@@ -33,11 +43,11 @@ public class TicketAR extends AbstractAnnotatedAggregateRoot<String> {
 
     private String userId;
 
-    public TicketAR() {
+    public Seance() {
 
     }
 
-    public TicketAR(CreateTicketCommand command) {
+    public Seance(CreateTicketCommand command) {
         TicketCreatedEvent event = new TicketCreatedEvent(command.getTicketId(), command.getFilmId(),
                 command.getCategory(), command.getPlaceNumber());
         apply(event);

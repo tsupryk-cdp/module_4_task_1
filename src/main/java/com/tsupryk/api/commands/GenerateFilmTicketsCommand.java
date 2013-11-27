@@ -1,6 +1,6 @@
 package com.tsupryk.api.commands;
 
-import com.tsupryk.api.entity.TicketCategory;
+import com.tsupryk.domain.entity.TicketCategory;
 
 /**
  * The class GenerateFilmTicketsCommand.

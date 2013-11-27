@@ -1,5 +1,6 @@
-package com.tsupryk.api.entity;
+package com.tsupryk.domain.entity;
 
+import com.tsupryk.api.TicketStatus;
 import com.tsupryk.api.events.TicketCreatedEvent;
 import org.springframework.data.annotation.Id;
 

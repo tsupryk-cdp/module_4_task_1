@@ -1,4 +1,4 @@
-package com.tsupryk.api.entity;
+package com.tsupryk.domain.entity;
 
 /**
  * The enum TicketCategory.

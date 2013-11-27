@@ -1,10 +1,10 @@
-package com.tsupryk.axon.controller;
+package com.tsupryk.domain.controller;
 
 import com.tsupryk.api.RestResponse;
 import com.tsupryk.api.commands.*;
-import com.tsupryk.api.entity.Ticket;
-import com.tsupryk.api.entity.TicketCategory;
-import com.tsupryk.axon.service.TicketService;
+import com.tsupryk.domain.entity.Ticket;
+import com.tsupryk.domain.entity.TicketCategory;
+import com.tsupryk.domain.service.TicketService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package com.tsupryk.api.aggregate;
+package com.tsupryk.domain.aggregate;
 
 import com.tsupryk.api.commands.CreateFilmCommand;
 import com.tsupryk.api.events.FilmCreatedEvent;

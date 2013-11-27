@@ -1,22 +1,20 @@
-package com.tsupryk.axon.handler;
+package com.tsupryk.domain.handler;
 
 import com.tsupryk.api.ServiceRuntimeException;
-import com.tsupryk.api.aggregate.TicketAR;
-import com.tsupryk.api.aggregate.UserAR;
+import com.tsupryk.domain.aggregate.Seance;
 import com.tsupryk.api.commands.BookTicketCommand;
 import com.tsupryk.api.commands.BookUserTicketsCommand;
 import com.tsupryk.api.commands.CreateTicketCommand;
 import com.tsupryk.api.commands.GenerateFilmTicketsCommand;
-import com.tsupryk.api.entity.Film;
-import com.tsupryk.api.entity.TicketStatus;
-import com.tsupryk.axon.service.FilmService;
-import com.tsupryk.axon.service.TicketService;
-import com.tsupryk.axon.service.UserService;
+import com.tsupryk.domain.entity.Film;
+import com.tsupryk.api.TicketStatus;
+import com.tsupryk.domain.service.FilmService;
+import com.tsupryk.domain.service.TicketService;
+import com.tsupryk.domain.service.UserService;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventsourcing.EventSourcingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -33,7 +31,7 @@ import java.util.UUID;
 public class TicketCommandHandler {
 
     @Resource(name = "ticketES")
-    private EventSourcingRepository<TicketAR> repository;
+    private EventSourcingRepository<Seance> repository;
 
     @Autowired
     private CommandGateway commandGateway;
@@ -49,13 +47,13 @@ public class TicketCommandHandler {
 
     @CommandHandler
     public void handleCreateTicket(CreateTicketCommand command) {
-        TicketAR ticket = new TicketAR(command);
+        Seance ticket = new Seance(command);
         repository.add(ticket);
     }
 
     @CommandHandler
     public void handleBookTicket(BookTicketCommand command) {
-        TicketAR ticket = repository.load(command.getTicketId());
+        Seance ticket = repository.load(command.getTicketId());
         ticket.book(command);
     }
 
@@ -65,16 +63,15 @@ public class TicketCommandHandler {
             throw new ServiceRuntimeException("User not exists!!");
         }
 
-        for (String ticketId : command.getTicketIds()) {
-            if (ticketService.getById(ticketId) != null) {
-                BookTicketCommand bookTicketCommand = new BookTicketCommand(ticketId, command.getUserId());
-                commandGateway.send(bookTicketCommand);
-            }
+        for (String seanceId : command.getTicketIds()) {
+            Seance seance = repository.load(seanceId);
+            seance.book(new BookTicketCommand(seanceId, command.getUserId()));
         }
     }
 
     @CommandHandler
     public void handleGenerateFilmTickets(GenerateFilmTicketsCommand command) {
+
         Film film = filmService.getById(command.getFilmId());
         if (film == null) {
             throw new ServiceRuntimeException("Film with id = " + command.getFilmId() + " not exists!!");

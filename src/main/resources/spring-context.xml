@@ -13,7 +13,7 @@
 
 
     <context:annotation-config />
-    <context:component-scan base-package="com.tsupryk.axon"/>
+    <context:component-scan base-package="com.tsupryk.domain"/>
     <context:property-placeholder location="classpath:app.properties" />
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
@@ -35,9 +35,9 @@
     <axon:command-bus id="commandBus"/>
     <axon:event-bus id="eventBus"/>
 
-    <axon:event-sourcing-repository id="ticketES" aggregate-type="com.tsupryk.api.aggregate.TicketAR"/>
-    <axon:event-sourcing-repository id="filmES" aggregate-type="com.tsupryk.api.aggregate.FilmAR"/>
-    <axon:event-sourcing-repository id="userES" aggregate-type="com.tsupryk.api.aggregate.UserAR"/>
+    <axon:event-sourcing-repository id="ticketES" aggregate-type="com.tsupryk.domain.aggregate.Seance"/>
+    <axon:event-sourcing-repository id="filmES" aggregate-type="com.tsupryk.domain.aggregate.FilmAR"/>
+    <axon:event-sourcing-repository id="userES" aggregate-type="com.tsupryk.domain.aggregate.UserAR"/>
 
     <bean id="mongo" class="com.mongodb.Mongo" factory-bean="mongoDbFactory" factory-method="createMongo" />
 
