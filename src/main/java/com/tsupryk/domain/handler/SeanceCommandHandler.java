@@ -1,19 +1,16 @@
 package com.tsupryk.domain.handler;
 
-import com.tsupryk.api.ServiceRuntimeException;
 import com.tsupryk.api.commands.BookUserTicketsCommand;
 import com.tsupryk.api.commands.CreateSeanceTicketsCommand;
+import com.tsupryk.domain.ServiceRuntimeException;
+import com.tsupryk.domain.aggregate.FilmAR;
 import com.tsupryk.domain.aggregate.Seance;
-import com.tsupryk.domain.entity.Film;
-import com.tsupryk.domain.service.FilmService;
-import com.tsupryk.domain.service.UserService;
+import com.tsupryk.domain.aggregate.UserAR;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 
 /**
  * The class UserCommandHandler.
@@ -28,27 +25,29 @@ public class SeanceCommandHandler {
     @Resource(name = "seanceES")
     private EventSourcingRepository<Seance> repository;
 
-    @Autowired
-    private UserService userService;
+    @Resource(name = "filmES")
+    private EventSourcingRepository<FilmAR> filmRepository;
 
-    @Autowired
-    FilmService filmService;
+    @Resource(name = "userES")
+    private EventSourcingRepository<UserAR> userRepository;
+
 
     @CommandHandler
     public void handleCreateSeanceTickets(CreateSeanceTicketsCommand command) {
-        Film film = filmService.getById(command.getFilmId());
+        checkThatFilmExist(command);
+        repository.add(new Seance(command));
+    }
+
+    private void checkThatFilmExist(CreateSeanceTicketsCommand command) {
+        FilmAR film = filmRepository.load(command.getFilmId());
         if (film == null) {
             throw new ServiceRuntimeException("Film with id = " + command.getFilmId() + " not exists!!");
         }
-
-        command.setSeanceId(UUID.randomUUID().toString());
-        Seance ticket = new Seance(command);
-        repository.add(ticket);
     }
 
     @CommandHandler
     public void handleBookUserTickets(BookUserTicketsCommand command) {
-        if (userService.getById(command.getUserId()) == null) {
+        if (userRepository.load(command.getUserId()) == null) {
             throw new ServiceRuntimeException("User not exists!!");
         }
 

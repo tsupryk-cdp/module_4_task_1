@@ -1,6 +1,6 @@
-package com.tsupryk.domain.service;
+package com.tsupryk.view.service;
 
-import com.tsupryk.domain.entity.Film;
+import com.tsupryk.view.entity.Film;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;

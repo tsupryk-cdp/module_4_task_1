@@ -1,4 +1,4 @@
-package com.tsupryk.api;
+package com.tsupryk.domain;
 
 /**
  * ServiceRuntimeException.

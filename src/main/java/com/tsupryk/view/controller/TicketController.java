@@ -1,10 +1,10 @@
-package com.tsupryk.domain.controller;
+package com.tsupryk.view.controller;
 
-import com.tsupryk.api.RestResponse;
+import com.tsupryk.view.RestResponse;
 import com.tsupryk.api.commands.*;
-import com.tsupryk.domain.entity.Ticket;
-import com.tsupryk.domain.entity.TicketCategory;
-import com.tsupryk.domain.service.TicketService;
+import com.tsupryk.view.entity.Ticket;
+import com.tsupryk.api.TicketCategory;
+import com.tsupryk.view.service.TicketService;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,8 +44,8 @@ public class TicketController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/generateFilmTickets.json", produces = "application/json", method = RequestMethod.POST)
-    public Object generateFilmTickets(@RequestBody GenerateFilmTicketsCommand command) {
+    @RequestMapping(value = "/crateTickets.json", produces = "application/json", method = RequestMethod.POST)
+    public Object generateFilmTickets(@RequestBody CreateSeanceTicketsCommand command) {
         commandGateway.send(command);
         RestResponse response = new RestResponse(SUCCESS, null);
         return response;

@@ -1,7 +1,7 @@
-package com.tsupryk.domain.entity;
+package com.tsupryk.view.entity;
 
+import com.tsupryk.api.TicketCategory;
 import com.tsupryk.api.TicketStatus;
-import com.tsupryk.api.events.SeanceTicketsCreatedEvent;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;

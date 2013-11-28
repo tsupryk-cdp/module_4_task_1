@@ -1,8 +1,8 @@
-package com.tsupryk.domain.listeners;
+package com.tsupryk.view.listeners;
 
-import com.tsupryk.domain.entity.Film;
+import com.tsupryk.view.entity.Film;
 import com.tsupryk.api.events.FilmCreatedEvent;
-import com.tsupryk.domain.service.FilmService;
+import com.tsupryk.view.service.FilmService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

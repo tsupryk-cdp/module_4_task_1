@@ -1,4 +1,4 @@
-package com.tsupryk.domain.entity;
+package com.tsupryk.view.entity;
 
 /**
  * The class User.

@@ -1,6 +1,6 @@
 package com.tsupryk.api.commands;
 
-import com.tsupryk.domain.entity.TicketCategory;
+import com.tsupryk.api.TicketCategory;
 import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 
 import java.util.List;

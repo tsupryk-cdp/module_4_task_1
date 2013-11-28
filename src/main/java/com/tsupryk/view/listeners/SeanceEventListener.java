@@ -1,12 +1,12 @@
-package com.tsupryk.domain.listeners;
+package com.tsupryk.view.listeners;
 
 import com.tsupryk.api.events.TicketsBookedEvent;
 import com.tsupryk.api.events.SeanceTicketsCreatedEvent;
-import com.tsupryk.domain.entity.Film;
-import com.tsupryk.domain.entity.Ticket;
+import com.tsupryk.view.entity.Film;
+import com.tsupryk.view.entity.Ticket;
 import com.tsupryk.api.TicketStatus;
-import com.tsupryk.domain.service.FilmService;
-import com.tsupryk.domain.service.TicketService;
+import com.tsupryk.view.service.FilmService;
+import com.tsupryk.view.service.TicketService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -18,14 +18,14 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * The Class UserEventListener.
+ * The Class SeanceEventListener.
  * <p/>
  * Date: 21.11.13
  *
  * @author Vitaliy_Tsupryk
  */
 @Component
-public class TicketEventListener {
+public class SeanceEventListener {
 
 
     @Autowired

@@ -1,6 +1,6 @@
 package com.tsupryk.api.events;
 
-import com.tsupryk.domain.entity.TicketCategory;
+import com.tsupryk.api.TicketCategory;
 
 import java.util.List;
 

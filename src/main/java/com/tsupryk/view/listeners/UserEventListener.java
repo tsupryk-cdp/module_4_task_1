@@ -1,8 +1,8 @@
-package com.tsupryk.domain.listeners;
+package com.tsupryk.view.listeners;
 
-import com.tsupryk.domain.entity.User;
+import com.tsupryk.view.entity.User;
 import com.tsupryk.api.events.UserCreatedEvent;
-import com.tsupryk.domain.service.UserService;
+import com.tsupryk.view.service.UserService;
 import org.axonframework.eventhandling.annotation.EventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

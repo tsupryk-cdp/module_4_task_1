@@ -1,6 +1,6 @@
 package com.tsupryk.domain.handler;
 
-import com.tsupryk.api.ServiceRuntimeException;
+import com.tsupryk.domain.ServiceRuntimeException;
 import com.tsupryk.domain.aggregate.FilmAR;
 import com.tsupryk.api.commands.CreateFilmCommand;
 import org.axonframework.commandhandling.annotation.CommandHandler;
