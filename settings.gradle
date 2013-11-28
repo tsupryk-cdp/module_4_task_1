@@ -1,0 +1,5 @@
+rootProject.name='cinema-main'
+
+include 'cinema-api'
+include 'cinema-domain'
+include 'cinema-view'

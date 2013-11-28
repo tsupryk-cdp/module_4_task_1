@@ -1,0 +1,7 @@
+
+dependencies {
+
+    compile 'junit:junit:4.10'
+    compile 'org.axonframework:axon-core:2.0.6'
+
+}
