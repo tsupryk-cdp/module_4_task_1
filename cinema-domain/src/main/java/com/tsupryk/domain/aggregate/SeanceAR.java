@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The class Seance.
+ * The class SeanceAR.
  * <p/>
  * Date: 17.11.13
  * <p/>
  * Author: Vitaliy
  */
-public class Seance extends AbstractAnnotatedAggregateRoot<String> {
+public class SeanceAR extends AbstractAnnotatedAggregateRoot<String> {
 
     @AggregateIdentifier
     private String id;
@@ -30,11 +30,11 @@ public class Seance extends AbstractAnnotatedAggregateRoot<String> {
 
     private Integer placeCount;
 
-    public Seance() {
+    public SeanceAR() {
 
     }
 
-    public Seance(CreateSeanceTicketsCommand command) {
+    public SeanceAR(CreateSeanceTicketsCommand command) {
         SeanceTicketsCreatedEvent event = new SeanceTicketsCreatedEvent(command.getSeanceId(), command.getFilmId(), command.getTicketsCategory(), command.getPlaceCount());
         apply(event);
     }

@@ -4,7 +4,7 @@ import com.tsupryk.api.commands.BookUserTicketsCommand;
 import com.tsupryk.api.commands.CreateSeanceTicketsCommand;
 import com.tsupryk.domain.ServiceRuntimeException;
 import com.tsupryk.domain.aggregate.FilmAR;
-import com.tsupryk.domain.aggregate.Seance;
+import com.tsupryk.domain.aggregate.SeanceAR;
 import com.tsupryk.domain.aggregate.UserAR;
 import org.axonframework.commandhandling.annotation.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingRepository;
@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 public class SeanceCommandHandler {
 
     @Resource(name = "seanceES")
-    private EventSourcingRepository<Seance> repository;
+    private EventSourcingRepository<SeanceAR> repository;
 
     @Resource(name = "filmES")
     private EventSourcingRepository<FilmAR> filmRepository;
@@ -35,7 +35,7 @@ public class SeanceCommandHandler {
     @CommandHandler
     public void handleCreateSeanceTickets(CreateSeanceTicketsCommand command) {
         checkThatFilmExist(command);
-        repository.add(new Seance(command));
+        repository.add(new SeanceAR(command));
     }
 
     private void checkThatFilmExist(CreateSeanceTicketsCommand command) {
@@ -51,8 +51,8 @@ public class SeanceCommandHandler {
             throw new ServiceRuntimeException("User not exists!!");
         }
 
-        Seance seance = repository.load(command.getSeanceId());
-        seance.book(command);
+        SeanceAR seanceAR = repository.load(command.getSeanceId());
+        seanceAR.book(command);
     }
 
 }
