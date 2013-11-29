@@ -5,15 +5,7 @@ allprojects {
 }
 
 subprojects {
-
     repositories {
         mavenCentral()
     }
-
-    dependencies {
-
-        runtime 'junit:junit:4.10'
-
-    }
-
 }

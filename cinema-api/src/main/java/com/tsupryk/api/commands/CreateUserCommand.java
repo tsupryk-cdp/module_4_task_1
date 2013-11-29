@@ -1,7 +1,5 @@
 package com.tsupryk.api.commands;
 
-import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
-
 /**
  * The class CreateUserCommand.
  * <p/>
@@ -11,7 +9,6 @@ import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
  */
 public class CreateUserCommand {
 
-    @TargetAggregateIdentifier
     private String userId;
 
     private String firstName;

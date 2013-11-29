@@ -1,7 +1,6 @@
 package com.tsupryk.api.commands;
 
 import com.tsupryk.api.TicketCategory;
-import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
 
 /**
  * The class CreateSeanceTicketsCommand.
@@ -12,7 +11,6 @@ import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
  */
 public class CreateSeanceTicketsCommand {
 
-    @TargetAggregateIdentifier
     private String seanceId;
 
     private String filmId;

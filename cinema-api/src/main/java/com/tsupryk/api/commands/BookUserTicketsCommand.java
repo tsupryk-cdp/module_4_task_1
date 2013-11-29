@@ -1,7 +1,5 @@
 package com.tsupryk.api.commands;
 
-import org.axonframework.commandhandling.annotation.TargetAggregateIdentifier;
-
 import java.util.List;
 
 /**
@@ -13,7 +11,6 @@ import java.util.List;
  */
 public class BookUserTicketsCommand {
 
-    @TargetAggregateIdentifier
     private String seanceId;
 
     private String userId;
